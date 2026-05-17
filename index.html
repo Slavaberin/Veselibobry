@@ -1,366 +1,399 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Веселі Бобри/Veseli bobry Kozelets · Виробничий звіт</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Весели Бобри · Production Report</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:wght@300;600;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--ink:#1a1a0f;--paper:#f5f0e8;--cream:#ede8d8;--green:#2d5a1b;--amber:#c17f24;--red:#9b2335;--blue:#1e3a5f;--rule:rgba(26,26,15,.12)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}
-header{background:var(--ink);color:var(--paper);padding:2.5rem 4rem 0;position:relative;overflow:hidden}
+
+/* ── Кнопка мови ─────────────────────────────────── */
+#lang-switcher{
+  position:fixed;top:1rem;right:1rem;z-index:9999;
+  display:flex;gap:3px;padding:5px;border-radius:6px;
+  background:#fff;border:2px solid var(--amber);
+  box-shadow:0 2px 12px rgba(0,0,0,.25)
+}
+.lng{
+  font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;
+  letter-spacing:.08em;padding:.3rem .75rem;border:none;cursor:pointer;
+  border-radius:3px;transition:all .15s;background:transparent;color:var(--ink)
+}
+.lng.on{background:var(--amber);color:#fff}
+
+header{background:var(--ink);color:var(--paper);padding:2.5rem 4rem 0;overflow:hidden;position:relative}
 header::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border:1px solid rgba(245,240,232,.08);border-radius:50%}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
+.htop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
 .brand{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;letter-spacing:-.02em;line-height:1}
 .brand span{color:var(--amber)}
 .tagline{font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(245,240,232,.4);letter-spacing:.15em;text-transform:uppercase;margin-top:.4rem}
-.report-meta{text-align:right;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(245,240,232,.45);line-height:1.8}
+.hmeta{text-align:right;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(245,240,232,.45);line-height:1.8}
 .period{display:inline-block;background:var(--amber);color:var(--ink);font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;letter-spacing:.08em;padding:.25rem .7rem;margin-top:.4rem}
 .hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,240,232,.08);margin:0 -4rem}
 .hstat{padding:1.2rem 2rem;background:var(--ink)}
-.hstat-v{font-family:'Fraunces',serif;font-size:2rem;font-weight:600;color:var(--amber);line-height:1}
-.hstat-l{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(245,240,232,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem;line-height:1.4}
+.hval{font-family:'Fraunces',serif;font-size:2rem;font-weight:600;color:var(--amber);line-height:1}
+.hlbl{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(245,240,232,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
 main{padding:2.5rem 4rem;max-width:1400px;margin:0 auto}
-.sec-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;padding-bottom:.5rem;border-bottom:2px solid var(--ink);margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:baseline}
-.sec-title .en{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.35);letter-spacing:.1em;text-transform:uppercase;font-weight:400}
+.stitle{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;padding-bottom:.5rem;border-bottom:2px solid var(--ink);margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:baseline}
+.ssub{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.35);letter-spacing:.1em;text-transform:uppercase;font-weight:400}
 .charts{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:2rem}
 .card{background:#fff;border:1px solid var(--rule);padding:1.2rem}
 .card h3{font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,26,15,.4);margin-bottom:1rem}
-.chart-w{position:relative;height:220px}
+.cw{position:relative;height:220px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
 .one{margin-bottom:2rem}
 table{width:100%;border-collapse:collapse;font-size:.855rem}
 thead tr{background:var(--ink);color:var(--paper)}
 thead th{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.65rem .9rem;text-align:left;font-weight:500}
-th.num,td.num{text-align:right}
+th.n,td.n{text-align:right}
 tbody tr{border-bottom:1px solid var(--rule)}
 tbody tr:hover{background:rgba(26,26,15,.02)}
-td{padding:.65rem .9rem;line-height:1.4}
-td.num{font-family:'DM Mono',monospace;font-size:.82rem}
+td{padding:.65rem .9rem}
+td.n{font-family:'DM Mono',monospace;font-size:.82rem}
 tfoot tr{border-top:2px solid var(--ink);background:var(--cream)}
 tfoot td{padding:.7rem .9rem;font-weight:500;font-family:'DM Mono',monospace;font-size:.8rem}
 .badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;padding:.12rem .45rem;border-radius:2px}
 .badge-green{background:#e8f5e0;color:var(--green)}
 .badge-amber{background:#fef3d0;color:var(--amber)}
 .badge-red{background:#fdeaea;color:var(--red)}
-.badge-blue{background:#e5edf7;color:var(--blue)}
 footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4rem;display:flex;justify-content:space-between;align-items:center}
-.footer-brand{font-family:'Fraunces',serif;font-size:.95rem;font-weight:600}
-.footer-meta{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.4);letter-spacing:.06em;text-align:right}
+.fbrand{font-family:'Fraunces',serif;font-size:.95rem;font-weight:600}
+.fmeta{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.4);letter-spacing:.06em;text-align:right}
 @media(max-width:900px){header,main,footer{padding-left:1.5rem;padding-right:1.5rem}.hstats,.charts,.two{grid-template-columns:1fr 1fr}.hstats{margin:0 -1.5rem}}
 </style>
 </head>
 <body>
+
+<div id="lang-switcher">
+  <button class="lng on" id="btn-uk" onclick="setLang('uk')">UA</button>
+  <button class="lng"     id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
 <header>
-  <div class="header-top">
+  <div class="htop">
     <div>
       <div class="brand">Весели <span>Бобри</span></div>
-      <div class="tagline">Woodwool.com.ua · Виробничий звіт · Production Report</div>
+      <div class="tagline" id="tagline">Woodwool.com.ua · Виробничий звіт</div>
     </div>
-    <div class="report-meta">
-      Козелець · Kozеlets facility<br>
-      Оновлено · Updated: 17.05.2026 15:47<br>
-      <span class="period">Актуально на 15.05</span>
+    <div class="hmeta">
+      <span id="facility">Козелець · Козелецький цех</span><br>
+      <span id="updated-lbl">Оновлено</span>: 17.05.2026 15:53<br>
+      <span class="period" id="current-lbl">Актуально на 15.05</span>
     </div>
   </div>
   <div class="hstats">
-    <div class="hstat">
-      <div class="hstat-v">901</div>
-      <div class="hstat-l">Котушок просочено<br>Coils soaked</div>
-    </div>
-    <div class="hstat">
-      <div class="hstat-v">+114%</div>
-      <div class="hstat-l">Сер. приріст<br>Avg weight gain</div>
-    </div>
-    <div class="hstat">
-      <div class="hstat-v">9 645</div>
-      <div class="hstat-l">кг розпалювача<br>kg fire starters</div>
-    </div>
-    <div class="hstat">
-      <div class="hstat-v">4 426</div>
-      <div class="hstat-l">Загальний запас<br>Total coil stock</div>
-    </div>
+    <div class="hstat"><div class="hval">901</div>
+      <div class="hlbl" id="lbl-coils">Котушок просочено</div></div>
+    <div class="hstat"><div class="hval">+114%</div>
+      <div class="hlbl" id="lbl-gain">Середній приріст</div></div>
+    <div class="hstat"><div class="hval">9,645</div>
+      <div class="hlbl" id="lbl-fire">кг розпалювача</div></div>
+    <div class="hstat"><div class="hval">3656</div>
+      <div class="hlbl" id="lbl-stock">Загальний запас</div></div>
   </div>
 </header>
 
 <main>
   <div class="charts">
-    <div class="card">
-      <h3>Середня вага по днях · Avg weight by day</h3>
-      <div class="chart-w"><canvas id="wChart"></canvas></div>
-    </div>
-    <div class="card">
-      <h3>Приріст після просочення % · Gain %</h3>
-      <div class="chart-w"><canvas id="gChart"></canvas></div>
-    </div>
+    <div class="card"><h3 id="ch1-title">Середня вага по днях</h3>
+      <div class="cw"><canvas id="wChart"></canvas></div></div>
+    <div class="card"><h3 id="ch2-title">Приріст після просочення %</h3>
+      <div class="cw"><canvas id="gChart"></canvas></div></div>
   </div>
 
   <div class="one">
-    <div class="sec-title">Журнал зважування · Soaking Log <span class="en">Многоліт А.Д.</span></div>
+    <div class="stitle"><span id="t-soak">Журнал зважування</span>
+      <span class="ssub">Многоліт А.Д.</span></div>
     <table>
       <thead><tr>
-        <th>Дата · Date</th><th class="num">Пар · Pairs</th>
-        <th class="num">Суха, кг · Dry</th><th class="num">Просоч., кг · Soaked</th>
-        <th class="num">Приріст · Gain</th>
+        <th id="th-date1">Дата</th>
+        <th class="n" id="th-pairs">Пар</th>
+        <th class="n" id="th-dry">Суха, кг</th>
+        <th class="n" id="th-soaked">Просочена, кг</th>
+        <th class="n" id="th-gain">Приріст</th>
       </tr></thead>
-      <tbody>
-        <tr>
+      <tbody><tr>
           <td><strong>06.05</strong></td>
           <td class="num">100</td>
           <td class="num">13.17</td>
           <td class="num">28.01</td>
-          <td class="num"><span class="badge badge-amber">+112.8%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-amber">+112.8%</span></td></tr><tr>
           <td><strong>07.05</strong></td>
           <td class="num">100</td>
           <td class="num">12.99</td>
           <td class="num">27.91</td>
-          <td class="num"><span class="badge badge-amber">+114.9%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr><tr>
           <td><strong>08.05</strong></td>
           <td class="num">100</td>
           <td class="num">13.55</td>
           <td class="num">28.81</td>
-          <td class="num"><span class="badge badge-amber">+112.6%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-amber">+112.6%</span></td></tr><tr>
           <td><strong>09.05</strong></td>
           <td class="num">100</td>
           <td class="num">12.79</td>
           <td class="num">27.53</td>
-          <td class="num"><span class="badge badge-green">+115.2%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">+115.2%</span></td></tr><tr>
           <td><strong>11.05</strong></td>
           <td class="num">100</td>
           <td class="num">12.87</td>
           <td class="num">27.55</td>
-          <td class="num"><span class="badge badge-amber">+114.2%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">+114.2%</span></td></tr><tr>
           <td><strong>12.05</strong></td>
           <td class="num">100</td>
           <td class="num">12.95</td>
           <td class="num">28.59</td>
-          <td class="num"><span class="badge badge-green">+120.8%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">+120.8%</span></td></tr><tr>
           <td><strong>13.05</strong></td>
           <td class="num">100</td>
           <td class="num">13.71</td>
           <td class="num">28.63</td>
-          <td class="num"><span class="badge badge-amber">+108.8%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-amber">+108.8%</span></td></tr><tr>
           <td><strong>14.05</strong></td>
           <td class="num">100</td>
           <td class="num">13.04</td>
           <td class="num">28.12</td>
-          <td class="num"><span class="badge badge-green">+115.6%</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">+115.6%</span></td></tr><tr>
           <td><strong>15.05</strong></td>
           <td class="num">101</td>
           <td class="num">13.18</td>
           <td class="num">28.33</td>
-          <td class="num"><span class="badge badge-amber">+114.9%</span></td>
-        </tr></tbody>
+          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr></tbody>
       <tfoot><tr>
-        <td><strong>РАЗОМ · TOTAL</strong></td>
-        <td class="num"><strong>901</strong></td>
-        <td class="num">13.14</td>
-        <td class="num">28.16</td>
-        <td class="num"><strong>+114.4%</strong></td>
+        <td><strong id="tf-total">РАЗОМ</strong></td>
+        <td class="n"><strong>901</strong></td>
+        <td class="n">13.14</td><td class="n">28.16</td>
+        <td class="n"><strong>+114.4%</strong></td>
       </tr></tfoot>
     </table>
   </div>
 
   <div class="two">
     <div>
-      <div class="sec-title">Рубка розпалювача · Fire Starters <span class="en">5 змін</span></div>
+      <div class="stitle"><span id="t-fire">Рубка розпалювача</span>
+        <span class="ssub">5 <span id="t-shifts">змін</span></span></div>
       <table>
         <thead><tr>
-          <th>Дата</th><th>Працівник · Worker</th>
-          <th class="num">Кот.</th><th class="num">кг</th>
-          <th class="num">Відх.</th><th class="num">Вихід</th>
+          <th id="th-date2">Дата</th><th id="th-worker">Працівник</th>
+          <th class="n" id="th-coils">Кот.</th>
+          <th class="n">кг</th>
+          <th class="n" id="th-waste">Відх.</th>
+          <th class="n" id="th-yield">Вихід</th>
         </tr></thead>
-        <tbody>
-        <tr>
-          <td>08.05</td>
-          <td>Подаков Андрій</td>
-          <td class="num">73</td>
-          <td class="num">1 926</td>
+        <tbody><tr>
+          <td>08.05</td><td>Подаков Андрій</td>
+          <td class="num">73</td><td class="num">1,926</td>
           <td class="num">245</td>
-          <td class="num"><span class="badge badge-green">26.4</span></td>
-        </tr>
-        <tr>
-          <td>09.05</td>
-          <td>Падій Петро</td>
-          <td class="num">82</td>
-          <td class="num">2 010</td>
+          <td class="num"><span class="badge badge-green">26.4</span></td></tr><tr>
+          <td>09.05</td><td>Падій Петро</td>
+          <td class="num">82</td><td class="num">2,010</td>
           <td class="num">260</td>
-          <td class="num"><span class="badge badge-amber">24.5</span></td>
-        </tr>
-        <tr>
-          <td>10.05</td>
-          <td>Падій Петро</td>
-          <td class="num">82</td>
-          <td class="num">2 100</td>
+          <td class="num"><span class="badge badge-amber">24.5</span></td></tr><tr>
+          <td>10.05</td><td>Падій Петро</td>
+          <td class="num">82</td><td class="num">2,100</td>
           <td class="num">240</td>
-          <td class="num"><span class="badge badge-green">25.6</span></td>
-        </tr>
-        <tr>
-          <td>12.05</td>
-          <td>Годасов Андрій</td>
-          <td class="num">74</td>
-          <td class="num">1 882</td>
+          <td class="num"><span class="badge badge-green">25.6</span></td></tr><tr>
+          <td>12.05</td><td>Годасов Андрій</td>
+          <td class="num">74</td><td class="num">1,882</td>
           <td class="num">175</td>
-          <td class="num"><span class="badge badge-green">25.4</span></td>
-        </tr>
-        <tr>
-          <td>14.05</td>
-          <td>Падій Петро</td>
-          <td class="num">66</td>
-          <td class="num">1 727</td>
+          <td class="num"><span class="badge badge-green">25.4</span></td></tr><tr>
+          <td>14.05</td><td>Падій Петро</td>
+          <td class="num">66</td><td class="num">1,727</td>
           <td class="num">110</td>
-          <td class="num"><span class="badge badge-green">26.2</span></td>
-        </tr></tbody>
+          <td class="num"><span class="badge badge-green">26.2</span></td></tr></tbody>
         <tfoot><tr>
-          <td colspan="2"><strong>РАЗОМ</strong></td>
-          <td class="num"><strong>377</strong></td>
-          <td class="num"><strong>9 645</strong></td>
-          <td class="num"><strong>1 030</strong></td>
-          <td class="num"><strong>25.6</strong></td>
+          <td colspan="2"><strong id="tf-total2">РАЗОМ</strong></td>
+          <td class="n"><strong>377</strong></td>
+          <td class="n"><strong>9,645</strong></td>
+          <td class="n"><strong>1,030</strong></td>
+          <td class="n"><strong>25.6</strong></td>
         </tr></tfoot>
       </table>
     </div>
-
     <div>
-      <div class="sec-title">Баланс просочення · Soaking Balance <span class="en">unsoaked coils</span></div>
+      <div class="stitle"><span id="t-sbal">Баланс просочення</span>
+        <span class="ssub" id="t-unsoak">непросочені</span></div>
       <table>
         <thead><tr>
-          <th>Дата</th><th class="num">Поч.</th>
-          <th class="num">+Надійшло</th><th class="num">−Просочено</th>
-          <th class="num">Залишок</th>
+          <th id="th-date3">Дата</th>
+          <th class="n" id="th-start">Поч.</th>
+          <th class="n" id="th-recv">+Надійшло</th>
+          <th class="n" id="th-proc">-Просочено</th>
+          <th class="n" id="th-bal">Залишок</th>
         </tr></thead>
-        <tbody>
-        <tr>
+        <tbody><tr>
           <td>06.05</td>
-          <td class="num">0</td>
+          <td class="num">0</td><td class="num">100</td>
           <td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
           <td>07.05</td>
-          <td class="num">0</td>
+          <td class="num">0</td><td class="num">100</td>
           <td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
           <td>08.05</td>
-          <td class="num">0</td>
+          <td class="num">0</td><td class="num">100</td>
           <td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
           <td>09.05</td>
-          <td class="num">0</td>
+          <td class="num">0</td><td class="num">100</td>
           <td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
           <td>10.05</td>
+          <td class="num">0</td><td class="num">0</td>
           <td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-green">0</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
           <td>11.05</td>
-          <td class="num">18</td>
-          <td class="num">216</td>
+          <td class="num">18</td><td class="num">216</td>
           <td class="num">100</td>
-          <td class="num"><span class="badge badge-red">134</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-red">134</span></td></tr><tr>
           <td>12.05</td>
-          <td class="num">134</td>
-          <td class="num">0</td>
+          <td class="num">134</td><td class="num">0</td>
           <td class="num">100</td>
-          <td class="num"><span class="badge badge-amber">34</span></td>
-        </tr>
-        <tr>
+          <td class="num"><span class="badge badge-amber">34</span></td></tr><tr>
           <td>14.05</td>
-          <td class="num">86</td>
-          <td class="num">108</td>
+          <td class="num">86</td><td class="num">108</td>
           <td class="num">100</td>
-          <td class="num"><span class="badge badge-red">94</span></td>
-        </tr></tbody>
+          <td class="num"><span class="badge badge-red">94</span></td></tr></tbody>
       </table>
     </div>
   </div>
 
   <div class="one">
-    <div class="sec-title">Рух сухих катушок · Dry Coil Movement <span class="en">daily balance</span></div>
+    <div class="stitle"><span id="t-dry">Рух сухих катушок</span>
+      <span class="ssub" id="t-daily">щоденний баланс</span></div>
     <table>
       <thead><tr>
-        <th>Дата</th><th class="num">Вироблено</th><th class="num">В сушарки</th>
-        <th class="num">−Відвант.</th><th class="num">Склад кін.</th>
-        <th class="num">В сушарках</th><th class="num">Загалом</th>
+        <th id="th-date4">Дата</th>
+        <th class="n" id="th-prod">Вироблено</th>
+        <th class="n" id="th-todr">В сушарки</th>
+        <th class="n" id="th-ship">-Відвант.</th>
+        <th class="n" id="th-whe">Склад кін.</th>
+        <th class="n" id="th-indr">В сушарках</th>
+        <th class="n" id="th-ttl">Загалом</th>
       </tr></thead>
-      <tbody>
-        <tr>
+      <tbody><tr>
           <td>11.05</td>
-          <td class="num">—</td>
-          <td class="num">—</td>
+          <td class="num">—</td><td class="num">—</td>
           <td class="num">797</td>
           <td class="num"><strong>1 074</strong></td>
           <td class="num">2 818</td>
-          <td class="num"><strong>3 892</strong></td>
-        </tr>
-        <tr>
+          <td class="num"><strong>3 892</strong></td></tr><tr>
           <td>12.05</td>
-          <td class="num">460</td>
-          <td class="num">1 332</td>
+          <td class="num">460</td><td class="num">1 332</td>
           <td class="num">800</td>
           <td class="num"><strong>572</strong></td>
           <td class="num">3 852</td>
-          <td class="num"><strong>4 424</strong></td>
-        </tr>
-        <tr>
+          <td class="num"><strong>4 424</strong></td></tr><tr>
           <td>13.05</td>
-          <td class="num">958</td>
-          <td class="num">864</td>
+          <td class="num">958</td><td class="num">864</td>
           <td class="num">790</td>
           <td class="num"><strong>279</strong></td>
           <td class="num">4 147</td>
-          <td class="num"><strong>4 426</strong></td>
-        </tr></tbody>
+          <td class="num"><strong>4 426</strong></td></tr><tr>
+          <td>14.05</td>
+          <td class="num">1 015</td><td class="num">864</td>
+          <td class="num">796</td>
+          <td class="num"><strong>655</strong></td>
+          <td class="num">3 731</td>
+          <td class="num"><strong>4 386</strong></td></tr><tr>
+          <td>15.05</td>
+          <td class="num">479</td><td class="num">864</td>
+          <td class="num">800</td>
+          <td class="num"><strong>223</strong></td>
+          <td class="num">4 117</td>
+          <td class="num"><strong>4 340</strong></td></tr><tr>
+          <td>16.05</td>
+          <td class="num">304</td><td class="num">—</td>
+          <td class="num">1 569</td>
+          <td class="num"><strong>0</strong></td>
+          <td class="num">2 792</td>
+          <td class="num"><strong>2 792</strong></td></tr><tr>
+          <td>17.05</td>
+          <td class="num">884</td><td class="num">864</td>
+          <td class="num">0</td>
+          <td class="num"><strong>302</strong></td>
+          <td class="num">3 354</td>
+          <td class="num"><strong>3 656</strong></td></tr></tbody>
     </table>
   </div>
 </main>
 
 <footer>
-  <div class="footer-brand">Весели Бобри · woodwool.com.ua</div>
-  <div class="footer-meta">Козелецький цех · Многоліт А.Д.<br>Оновлено автоматично · Auto-generated 17.05.2026 15:47</div>
+  <div class="fbrand">Весели Бобри · woodwool.com.ua</div>
+  <div class="fmeta">
+    <span id="f-facility">Козелецький цех · Многоліт А.Д.</span><br>
+    <span id="f-auto">Оновлено автоматично</span> · 17.05.2026 15:53
+  </div>
 </footer>
 
 <script>
-const INK='#1a1a0f',GREEN='#2d5a1b',AMBER='#c17f24',BLUE='#1e3a5f';
+const T = {
+  uk: {
+    tagline:"Woodwool.com.ua · Виробничий звіт",
+    facility:"Козелець · Козелецький цех",
+    "updated-lbl":"Оновлено","current-lbl":"Актуально на 15.05",
+    "lbl-coils":"Котушок просочено","lbl-gain":"Середній приріст",
+    "lbl-fire":"кг розпалювача","lbl-stock":"Загальний запас",
+    "ch1-title":"Середня вага по днях","ch2-title":"Приріст після просочення %",
+    "t-soak":"Журнал зважування","t-fire":"Рубка розпалювача",
+    "t-shifts":"змін","t-sbal":"Баланс просочення","t-unsoak":"непросочені",
+    "t-dry":"Рух сухих катушок","t-daily":"щоденний баланс",
+    "th-date1":"Дата","th-date2":"Дата","th-date3":"Дата","th-date4":"Дата",
+    "th-pairs":"Пар","th-dry":"Суха, кг","th-soaked":"Просочена, кг","th-gain":"Приріст",
+    "th-worker":"Працівник","th-coils":"Кот.","th-waste":"Відх.","th-yield":"Вихід",
+    "th-start":"Поч.","th-recv":"+Надійшло","th-proc":"-Просочено","th-bal":"Залишок",
+    "th-prod":"Вироблено","th-todr":"В сушарки","th-ship":"-Відвант.",
+    "th-whe":"Склад кін.","th-indr":"В сушарках","th-ttl":"Загалом",
+    "tf-total":"РАЗОМ","tf-total2":"РАЗОМ",
+    "f-facility":"Козелецький цех · Многоліт А.Д.","f-auto":"Оновлено автоматично"
+  },
+  en: {
+    tagline:"Woodwool.com.ua · Production Report",
+    facility:"Kozеlets · Production facility",
+    "updated-lbl":"Updated","current-lbl":"Current as of 15.05",
+    "lbl-coils":"Coils soaked","lbl-gain":"Avg weight gain",
+    "lbl-fire":"kg fire starters","lbl-stock":"Total coil stock",
+    "ch1-title":"Avg coil weight by day","ch2-title":"Weight gain after soaking %",
+    "t-soak":"Soaking Log","t-fire":"Fire Starter Production",
+    "t-shifts":"shifts","t-sbal":"Soaking Balance","t-unsoak":"unsoaked coils",
+    "t-dry":"Dry Coil Movement","t-daily":"daily balance",
+    "th-date1":"Date","th-date2":"Date","th-date3":"Date","th-date4":"Date",
+    "th-pairs":"Pairs","th-dry":"Dry, kg","th-soaked":"Soaked, kg","th-gain":"Gain",
+    "th-worker":"Worker","th-coils":"Coils","th-waste":"Waste","th-yield":"Yield",
+    "th-start":"Start","th-recv":"+Received","th-proc":"-Soaked","th-bal":"Balance",
+    "th-prod":"Produced","th-todr":"To dryers","th-ship":"-Shipped",
+    "th-whe":"Warehouse end","th-indr":"In dryers","th-ttl":"Total",
+    "tf-total":"TOTAL","tf-total2":"TOTAL",
+    "f-facility":"Kozеlets facility · Mnoholit A.D.","f-auto":"Auto-generated"
+  }
+};
+
+let curLang = localStorage.getItem('vb_lang') || 'uk';
+
+function setLang(lang) {
+  curLang = lang;
+  localStorage.setItem('vb_lang', lang);
+  document.getElementById('btn-uk').className = 'lng' + (lang==='uk' ? ' on' : '');
+  document.getElementById('btn-en').className = 'lng' + (lang==='en' ? ' on' : '');
+  document.documentElement.lang = lang;
+  const d = T[lang];
+  for (const [id, txt] of Object.entries(d)) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  }
+}
+
+setLang(curLang);
+
+const INK='#1a1a0f',GREEN='#2d5a1b',AMBER='#c17f24';
 const DAYS=["06.05", "07.05", "08.05", "09.05", "11.05", "12.05", "13.05", "14.05", "15.05"],DRY=[13.17, 12.99, 13.55, 12.79, 12.87, 12.95, 13.71, 13.04, 13.18],SOAK=[28.01, 27.91, 28.81, 27.53, 27.55, 28.59, 28.63, 28.12, 28.33],GAINS=[112.8, 114.9, 112.6, 115.2, 114.2, 120.8, 108.8, 115.6, 114.9];
+
 new Chart(document.getElementById('wChart'),{
-  type:'bar',
-  data:{labels:DAYS,datasets:[
-    {label:'Суха · Dry (кг)',data:DRY,backgroundColor:'rgba(30,58,95,.85)',borderRadius:2,borderWidth:0},
-    {label:'Просочена · Soaked (кг)',data:SOAK,backgroundColor:'rgba(193,127,36,.85)',borderRadius:2,borderWidth:0}
+  type:'bar',data:{labels:DAYS,datasets:[
+    {label:'Суха / Dry (кг)',data:DRY,backgroundColor:'rgba(30,58,95,.85)',borderRadius:2,borderWidth:0},
+    {label:'Просочена / Soaked (кг)',data:SOAK,backgroundColor:'rgba(193,127,36,.85)',borderRadius:2,borderWidth:0}
   ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{labels:{font:{family:'DM Mono',size:10},color:INK}}},
@@ -368,11 +401,10 @@ new Chart(document.getElementById('wChart'),{
              y:{grid:{color:'rgba(26,26,15,.06)'},ticks:{font:{family:'DM Mono',size:10},color:INK},min:10}}}
 });
 new Chart(document.getElementById('gChart'),{
-  type:'line',
-  data:{labels:DAYS,datasets:[{
-    label:'Приріст % · Gain %',data:GAINS,
-    borderColor:GREEN,backgroundColor:'rgba(45,90,27,.08)',
-    borderWidth:2,pointBackgroundColor:GREEN,pointRadius:4,fill:true,tension:.3
+  type:'line',data:{labels:DAYS,datasets:[{
+    label:'Приріст / Gain %',data:GAINS,borderColor:GREEN,
+    backgroundColor:'rgba(45,90,27,.08)',borderWidth:2,
+    pointBackgroundColor:GREEN,pointRadius:4,fill:true,tension:.3
   }]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{labels:{font:{family:'DM Mono',size:10},color:INK}}},
