@@ -80,12 +80,12 @@ footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 18.05.2026 13:23<br>
-      <span class="period" id="current-lbl">Актуально на 15.05</span>
+      <span id="updated-lbl">Оновлено</span>: 18.05.2026 15:03<br>
+      <span class="period" id="current-lbl">Актуально на 18.05</span>
     </div>
   </div>
   <div class="hstats">
-    <div class="hstat"><div class="hval">901</div>
+    <div class="hstat"><div class="hval">1,001</div>
       <div class="hlbl" id="lbl-coils">Котушок просочено</div></div>
     <div class="hstat"><div class="hval">+114%</div>
       <div class="hlbl" id="lbl-gain">Середній приріст</div></div>
@@ -160,12 +160,17 @@ footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4
           <td class="num">101</td>
           <td class="num">13.18</td>
           <td class="num">28.33</td>
-          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr></tbody>
+          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr><tr>
+          <td><strong>18.05</strong></td>
+          <td class="num">100</td>
+          <td class="num">12.84</td>
+          <td class="num">27.22</td>
+          <td class="num"><span class="badge badge-amber">+111.8%</span></td></tr></tbody>
       <tfoot><tr>
         <td><strong id="tf-total">РАЗОМ</strong></td>
-        <td class="n"><strong>901</strong></td>
-        <td class="n">13.14</td><td class="n">28.16</td>
-        <td class="n"><strong>+114.4%</strong></td>
+        <td class="n"><strong>1001</strong></td>
+        <td class="n">13.11</td><td class="n">28.07</td>
+        <td class="n"><strong>+114.2%</strong></td>
       </tr></tfoot>
     </table>
   </div>
@@ -338,7 +343,7 @@ footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4
   <div class="fbrand">Весели Бобри · woodwool.com.ua</div>
   <div class="fmeta">
     <span id="f-facility">Козелецький цех · Многоліт А.Д.</span><br>
-    <span id="f-auto">Оновлено автоматично</span> · 18.05.2026 13:23
+    <span id="f-auto">Оновлено автоматично</span> · 18.05.2026 15:03
   </div>
 </footer>
 
@@ -347,7 +352,7 @@ const T = {
   uk: {
     tagline:"Woodwool.com.ua · Виробничий звіт",
     facility:"Козелець · Козелецький цех",
-    "updated-lbl":"Оновлено","current-lbl":"Актуально на 15.05",
+    "updated-lbl":"Оновлено","current-lbl":"Актуально на 18.05",
     "lbl-coils":"Котушок просочено","lbl-gain":"Середній приріст",
     "lbl-fire":"кг розпалювача","lbl-stock":"Загальний запас",
     "ch1-title":"Середня вага по днях","ch2-title":"Приріст після просочення %",
@@ -366,7 +371,7 @@ const T = {
   en: {
     tagline:"Woodwool.com.ua · Production Report",
     facility:"Kozеlets · Production facility",
-    "updated-lbl":"Updated","current-lbl":"Current as of 15.05",
+    "updated-lbl":"Updated","current-lbl":"Current as of 18.05",
     "lbl-coils":"Coils soaked","lbl-gain":"Avg weight gain",
     "lbl-fire":"kg fire starters","lbl-stock":"Total coil stock",
     "ch1-title":"Avg coil weight by day","ch2-title":"Weight gain after soaking %",
@@ -402,7 +407,7 @@ function setLang(lang) {
 setLang(curLang);
 
 const INK='#1a1a0f',GREEN='#2d5a1b',AMBER='#c17f24';
-const DAYS=["06.05", "07.05", "08.05", "09.05", "11.05", "12.05", "13.05", "14.05", "15.05"],DRY=[13.17, 12.99, 13.55, 12.79, 12.87, 12.95, 13.71, 13.04, 13.18],SOAK=[28.01, 27.91, 28.81, 27.53, 27.55, 28.59, 28.63, 28.12, 28.33],GAINS=[112.8, 114.9, 112.6, 115.2, 114.2, 120.8, 108.8, 115.6, 114.9];
+const DAYS=["06.05", "07.05", "08.05", "09.05", "11.05", "12.05", "13.05", "14.05", "15.05", "18.05"],DRY=[13.17, 12.99, 13.55, 12.79, 12.87, 12.95, 13.71, 13.04, 13.18, 12.84],SOAK=[28.01, 27.91, 28.81, 27.53, 27.55, 28.59, 28.63, 28.12, 28.33, 27.22],GAINS=[112.8, 114.9, 112.6, 115.2, 114.2, 120.8, 108.8, 115.6, 114.9, 111.8];
 
 new Chart(document.getElementById('wChart'),{
   type:'bar',data:{labels:DAYS,datasets:[
