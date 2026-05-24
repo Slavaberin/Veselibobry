@@ -3,66 +3,101 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Весели Бобри · Production Report</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:wght@300;600;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:wght@400;600;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{--ink:#1a1a0f;--paper:#f5f0e8;--cream:#ede8d8;--green:#2d5a1b;--amber:#c17f24;--red:#9b2335;--blue:#1e3a5f;--rule:rgba(26,26,15,.12)}
+:root{
+  --ink:#1a1a0f;--paper:#f5f0e8;--cream:#ede8d8;
+  --green:#2d5a1b;--amber:#c17f24;--red:#9b2335;
+  --rule:rgba(26,26,15,.1);--row:44px
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink)}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);font-size:.9rem}
 
-/* ── Кнопка мови ─────────────────────────────────── */
-#lang-switcher{
-  position:fixed;top:1rem;right:1rem;z-index:9999;
-  display:flex;gap:3px;padding:5px;border-radius:6px;
-  background:#fff;border:2px solid var(--amber);
-  box-shadow:0 2px 12px rgba(0,0,0,.25)
-}
-.lng{
-  font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;
-  letter-spacing:.08em;padding:.3rem .75rem;border:none;cursor:pointer;
-  border-radius:3px;transition:all .15s;background:transparent;color:var(--ink)
-}
+/* ── Lang switcher ── */
+#lang-switcher{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;gap:3px;
+  padding:4px;border-radius:5px;background:#fff;border:1.5px solid var(--amber);
+  box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.lng{font-family:"DM Mono",monospace;font-size:.7rem;font-weight:500;letter-spacing:.08em;
+  padding:.25rem .6rem;border:none;cursor:pointer;border-radius:3px;
+  transition:all .15s;background:transparent;color:var(--ink)}
 .lng.on{background:var(--amber);color:#fff}
 
-header{background:var(--ink);color:var(--paper);padding:2.5rem 4rem 0;overflow:hidden;position:relative}
-header::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;border:1px solid rgba(245,240,232,.08);border-radius:50%}
+/* ── Header ── */
+header{background:var(--ink);color:var(--paper);padding:2.5rem 4rem 0;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;top:-60px;right:-60px;width:280px;height:280px;
+  border:1px solid rgba(245,240,232,.06);border-radius:50%}
 .htop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
-.brand{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;letter-spacing:-.02em;line-height:1}
+.brand{font-family:"Fraunces",serif;font-size:2.4rem;font-weight:900;letter-spacing:-.02em;line-height:1}
 .brand span{color:var(--amber)}
-.tagline{font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(245,240,232,.4);letter-spacing:.15em;text-transform:uppercase;margin-top:.4rem}
-.hmeta{text-align:right;font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(245,240,232,.45);line-height:1.8}
-.period{display:inline-block;background:var(--amber);color:var(--ink);font-family:'DM Mono',monospace;font-size:.7rem;font-weight:500;letter-spacing:.08em;padding:.25rem .7rem;margin-top:.4rem}
-.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(245,240,232,.08);margin:0 -4rem}
-.hstat{padding:1.2rem 2rem;background:var(--ink)}
-.hval{font-family:'Fraunces',serif;font-size:2rem;font-weight:600;color:var(--amber);line-height:1}
-.hlbl{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(245,240,232,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
+.tagline{font-family:"DM Mono",monospace;font-size:.63rem;color:rgba(245,240,232,.35);
+  letter-spacing:.15em;text-transform:uppercase;margin-top:.4rem}
+.hmeta{text-align:right;font-family:"DM Mono",monospace;font-size:.68rem;
+  color:rgba(245,240,232,.4);line-height:1.9}
+.period{display:inline-block;background:var(--amber);color:var(--ink);
+  font-family:"DM Mono",monospace;font-size:.66rem;font-weight:500;
+  letter-spacing:.08em;padding:.2rem .6rem;margin-top:.3rem}
+.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(245,240,232,.07);margin:0 -4rem}
+.hstat{padding:1.1rem 2rem;background:var(--ink)}
+.hval{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:600;color:var(--amber);line-height:1}
+.hlbl{font-family:"DM Mono",monospace;font-size:.58rem;color:rgba(245,240,232,.35);
+  letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
+
+/* ── Main ── */
 main{padding:2.5rem 4rem;max-width:1400px;margin:0 auto}
-.stitle{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;padding-bottom:.5rem;border-bottom:2px solid var(--ink);margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:baseline}
-.ssub{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.35);letter-spacing:.1em;text-transform:uppercase;font-weight:400}
-.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:2rem}
+
+/* ── Section title (matches screenshot) ── */
+.sec{margin-bottom:2.5rem}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:.55rem;border-bottom:2px solid var(--ink);margin-bottom:0}
+.sec-title{font-family:"Fraunces",serif;font-size:1.05rem;font-weight:600;letter-spacing:-.01em}
+.sec-sub{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(26,26,15,.3);font-weight:400}
+
+/* ── Two-col layout ── */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.charts{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:2.5rem}
 .card{background:#fff;border:1px solid var(--rule);padding:1.2rem}
-.card h3{font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,26,15,.4);margin-bottom:1rem}
-.cw{position:relative;height:220px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
-.one{margin-bottom:2rem}
-table{width:100%;border-collapse:collapse;font-size:.855rem}
+.card h3{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(26,26,15,.35);margin-bottom:1rem}
+.cw{position:relative;height:210px}
+
+/* ── Scrollable table ── */
+.tbl-wrap{width:100%}
+.tbl-wrap table{width:100%;border-collapse:collapse;table-layout:fixed}
+
+/* Fixed header + scrollable body */
+.tbl-wrap thead{display:table;width:100%;table-layout:fixed}
+.tbl-wrap tbody{display:block;max-height:calc(5 * var(--row));overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--amber) transparent}
+.tbl-wrap tbody::-webkit-scrollbar{width:4px}
+.tbl-wrap tbody::-webkit-scrollbar-thumb{background:var(--amber);border-radius:2px}
+.tbl-wrap tbody tr{display:table;width:100%;table-layout:fixed}
+.tbl-wrap tfoot{display:table;width:100%;table-layout:fixed}
+
 thead tr{background:var(--ink);color:var(--paper)}
-thead th{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.65rem .9rem;text-align:left;font-weight:500}
+thead th{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.09em;
+  text-transform:uppercase;padding:.65rem 1rem;text-align:left;font-weight:500}
 th.n,td.n{text-align:right}
-tbody tr{border-bottom:1px solid var(--rule)}
-tbody tr:hover{background:rgba(26,26,15,.02)}
-td{padding:.65rem .9rem}
-td.n{font-family:'DM Mono',monospace;font-size:.82rem}
+tbody tr{border-bottom:1px solid var(--rule);height:var(--row)}
+tbody tr:hover{background:rgba(26,26,15,.025)}
+td{padding:.6rem 1rem;vertical-align:middle}
+td.n{font-family:"DM Mono",monospace;font-size:.82rem}
 tfoot tr{border-top:2px solid var(--ink);background:var(--cream)}
-tfoot td{padding:.7rem .9rem;font-weight:500;font-family:'DM Mono',monospace;font-size:.8rem}
-.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;padding:.12rem .45rem;border-radius:2px}
-.badge-green{background:#e8f5e0;color:var(--green)}
-.badge-amber{background:#fef3d0;color:var(--amber)}
-.badge-red{background:#fdeaea;color:var(--red)}
-footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4rem;display:flex;justify-content:space-between;align-items:center}
-.fbrand{font-family:'Fraunces',serif;font-size:.95rem;font-weight:600}
-.fmeta{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(26,26,15,.4);letter-spacing:.06em;text-align:right}
-@media(max-width:900px){header,main,footer{padding-left:1.5rem;padding-right:1.5rem}.hstats,.charts,.two{grid-template-columns:1fr 1fr}.hstats{margin:0 -1.5rem}}
+tfoot td{padding:.7rem 1rem;font-weight:600;font-family:"DM Mono",monospace;font-size:.8rem}
+
+footer{background:var(--cream);border-top:1px solid var(--rule);
+  padding:1.2rem 4rem;display:flex;justify-content:space-between;align-items:center}
+.fbrand{font-family:"Fraunces",serif;font-size:.9rem;font-weight:600}
+.fmeta{font-family:"DM Mono",monospace;font-size:.6rem;color:rgba(26,26,15,.35);
+  letter-spacing:.06em;text-align:right}
+
+@media(max-width:900px){
+  header,main,footer{padding-left:1.2rem;padding-right:1.2rem}
+  .hstats,.charts,.two{grid-template-columns:1fr 1fr}
+  .hstats{margin:0 -1.2rem}
+}
 </style>
 </head>
 <body>
@@ -80,7 +115,7 @@ footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 24.05.2026 09:57<br>
+      <span id="updated-lbl">Оновлено</span>: 24.05.2026 10:54<br>
       <span class="period" id="current-lbl">Актуально на 18.05</span>
     </div>
   </div>
@@ -97,423 +132,505 @@ footer{background:var(--cream);border-top:1px solid var(--rule);padding:1.2rem 4
 </header>
 
 <main>
+
+  <!-- Charts -->
   <div class="charts">
-    <div class="card"><h3 id="ch1-title">Середня вага по днях</h3>
-      <div class="cw"><canvas id="wChart"></canvas></div></div>
-    <div class="card"><h3 id="ch2-title">Приріст після просочення %</h3>
-      <div class="cw"><canvas id="gChart"></canvas></div></div>
+    <div class="card">
+      <h3 id="ch1-title">Середня вага по днях</h3>
+      <div class="cw"><canvas id="wChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3 id="ch2-title">Приріст після просочення %</h3>
+      <div class="cw"><canvas id="gChart"></canvas></div>
+    </div>
   </div>
 
-  <div class="one">
-    <div class="stitle"><span id="t-soak">Журнал зважування</span>
-      <span class="ssub">Многоліт А.Д.</span></div>
-    <table>
-      <thead><tr>
-        <th id="th-date1">Дата</th>
-        <th class="n" id="th-pairs">Пар</th>
-        <th class="n" id="th-dry">Суха, кг</th>
-        <th class="n" id="th-soaked">Просочена, кг</th>
-        <th class="n" id="th-gain">Приріст</th>
-      </tr></thead>
-      <tbody><tr>
-          <td><strong>06.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">13.17</td>
-          <td class="num">28.01</td>
-          <td class="num"><span class="badge badge-amber">+112.8%</span></td></tr><tr>
-          <td><strong>07.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">12.99</td>
-          <td class="num">27.91</td>
-          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr><tr>
-          <td><strong>08.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">13.55</td>
-          <td class="num">28.81</td>
-          <td class="num"><span class="badge badge-amber">+112.6%</span></td></tr><tr>
-          <td><strong>09.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">12.79</td>
-          <td class="num">27.53</td>
-          <td class="num"><span class="badge badge-green">+115.2%</span></td></tr><tr>
-          <td><strong>11.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">12.87</td>
-          <td class="num">27.55</td>
-          <td class="num"><span class="badge badge-green">+114.2%</span></td></tr><tr>
-          <td><strong>12.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">12.95</td>
-          <td class="num">28.59</td>
-          <td class="num"><span class="badge badge-green">+120.8%</span></td></tr><tr>
-          <td><strong>13.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">13.71</td>
-          <td class="num">28.63</td>
-          <td class="num"><span class="badge badge-amber">+108.8%</span></td></tr><tr>
-          <td><strong>14.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">13.04</td>
-          <td class="num">28.12</td>
-          <td class="num"><span class="badge badge-green">+115.6%</span></td></tr><tr>
-          <td><strong>15.05</strong></td>
-          <td class="num">101</td>
-          <td class="num">13.18</td>
-          <td class="num">28.33</td>
-          <td class="num"><span class="badge badge-green">+114.9%</span></td></tr><tr>
-          <td><strong>18.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">12.84</td>
-          <td class="num">27.22</td>
-          <td class="num"><span class="badge badge-amber">+111.8%</span></td></tr></tbody>
-      <tfoot><tr>
-        <td><strong id="tf-total">РАЗОМ</strong></td>
-        <td class="n"><strong>1001</strong></td>
-        <td class="n">13.11</td><td class="n">28.07</td>
-        <td class="n"><strong>+114.2%</strong></td>
-      </tr></tfoot>
-    </table>
-  </div>
-
-  <div class="two">
-    <div>
-      <div class="stitle"><span id="t-fire">Рубка розпалювача</span>
-        <span class="ssub">11 <span id="t-shifts">змін</span></span></div>
+  <!-- Журнал зважування -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title" id="t-soak">Журнал зважування</span>
+      <span class="sec-sub">Многоліт А.Д.</span>
+    </div>
+    <div class="tbl-wrap">
       <table>
         <thead><tr>
-          <th id="th-date2">Дата</th><th id="th-worker">Працівник</th>
-          <th class="n" id="th-coils">Кот.</th>
-          <th class="n">кг</th>
-          <th class="n" id="th-waste">Відх.</th>
-          <th class="n" id="th-yield">Вихід</th>
+          <th id="th-date1">Дата</th>
+          <th class="n" id="th-pairs">Пар</th>
+          <th class="n" id="th-dry">Суха, кг</th>
+          <th class="n" id="th-soaked">Просочена, кг</th>
+          <th class="n" id="th-gain">Приріст</th>
         </tr></thead>
         <tbody><tr>
-          <td>08.05</td><td>Подаков Андрій</td>
-          <td class="num">73</td><td class="num">1,926</td>
-          <td class="num">245</td>
-          <td class="num"><span class="badge badge-green">26.4</span></td></tr><tr>
-          <td>09.05</td><td>Падій Петро</td>
-          <td class="num">82</td><td class="num">2,010</td>
-          <td class="num">260</td>
-          <td class="num"><span class="badge badge-amber">24.5</span></td></tr><tr>
-          <td>10.05</td><td>Падій Петро</td>
-          <td class="num">82</td><td class="num">2,100</td>
-          <td class="num">240</td>
-          <td class="num"><span class="badge badge-green">25.6</span></td></tr><tr>
-          <td>12.05</td><td>Годасов Андрій</td>
-          <td class="num">74</td><td class="num">1,882</td>
-          <td class="num">175</td>
-          <td class="num"><span class="badge badge-green">25.4</span></td></tr><tr>
-          <td>14.05</td><td>Падій Петро</td>
-          <td class="num">66</td><td class="num">1,727</td>
-          <td class="num">110</td>
-          <td class="num"><span class="badge badge-green">26.2</span></td></tr><tr>
-          <td>15.05</td><td>Вертюх Сергій</td>
-          <td class="num">None</td><td class="num">489</td>
-          <td class="num">120</td>
-          <td class="num"><span class="badge badge-amber">0.0</span></td></tr><tr>
-          <td>17.05</td><td>Падій Петро</td>
-          <td class="num">70</td><td class="num">1,836</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">26.2</span></td></tr><tr>
-          <td>18.05</td><td>Падій Петро</td>
-          <td class="num">72</td><td class="num">1,955</td>
-          <td class="num">180</td>
-          <td class="num"><span class="badge badge-green">27.2</span></td></tr><tr>
-          <td>19.05</td><td>Падій Петро</td>
-          <td class="num">64</td><td class="num">1,714</td>
-          <td class="num">80</td>
-          <td class="num"><span class="badge badge-green">26.8</span></td></tr><tr>
-          <td>20.05</td><td>Падій Петро</td>
-          <td class="num">80</td><td class="num">2,201</td>
-          <td class="num">150</td>
-          <td class="num"><span class="badge badge-green">27.5</span></td></tr><tr>
-          <td>21.05</td><td>Падій Петро</td>
-          <td class="num">66</td><td class="num">1,574</td>
-          <td class="num">110</td>
-          <td class="num"><span class="badge badge-amber">23.8</span></td></tr></tbody>
+      <td><strong>06.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">13.17</td>
+      <td class="n">28.01</td>
+      <td class="n"><span style="color:#c17f24;font-weight:600">+112.8%</span></td></tr><tr>
+      <td><strong>07.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">12.99</td>
+      <td class="n">27.91</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+114.9%</span></td></tr><tr>
+      <td><strong>08.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">13.55</td>
+      <td class="n">28.81</td>
+      <td class="n"><span style="color:#c17f24;font-weight:600">+112.6%</span></td></tr><tr>
+      <td><strong>09.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">12.79</td>
+      <td class="n">27.53</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+115.2%</span></td></tr><tr>
+      <td><strong>11.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">12.87</td>
+      <td class="n">27.55</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+114.2%</span></td></tr><tr>
+      <td><strong>12.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">12.95</td>
+      <td class="n">28.59</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+120.8%</span></td></tr><tr>
+      <td><strong>13.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">13.71</td>
+      <td class="n">28.63</td>
+      <td class="n"><span style="color:#c17f24;font-weight:600">+108.8%</span></td></tr><tr>
+      <td><strong>14.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">13.04</td>
+      <td class="n">28.12</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+115.6%</span></td></tr><tr>
+      <td><strong>15.05</strong></td>
+      <td class="n">101</td>
+      <td class="n">13.18</td>
+      <td class="n">28.33</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:600">+114.9%</span></td></tr><tr>
+      <td><strong>18.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">12.84</td>
+      <td class="n">27.22</td>
+      <td class="n"><span style="color:#c17f24;font-weight:600">+111.8%</span></td></tr></tbody>
         <tfoot><tr>
-          <td colspan="2"><strong id="tf-total2">РАЗОМ</strong></td>
-          <td class="n"><strong>729</strong></td>
-          <td class="n"><strong>19,414</strong></td>
-          <td class="n"><strong>1,770</strong></td>
-          <td class="n"><strong>26.6</strong></td>
+          <td id="tf-total">РАЗОМ</td>
+          <td class="n">1001</td>
+          <td class="n">13.11</td>
+          <td class="n">28.07</td>
+          <td class="n">+114.2%</td>
         </tr></tfoot>
       </table>
     </div>
-    <div>
-      <div class="stitle"><span id="t-sbal">Баланс просочення</span>
-        <span class="ssub" id="t-unsoak">непросочені</span></div>
+  </div>
+
+  <!-- Two columns: Рубка + Баланс непросочених -->
+  <div class="two">
+    <div class="sec">
+      <div class="sec-head">
+        <span class="sec-title" id="t-fire">Рубка розпалювача</span>
+        <span class="sec-sub" id="t-shifts">11 змін</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th id="th-date2">Дата</th>
+            <th id="th-worker">Працівник</th>
+            <th class="n" id="th-coils">Кот.</th>
+            <th class="n">кг</th>
+            <th class="n" id="th-waste">Відх.</th>
+            <th class="n" id="th-yield">Вихід</th>
+          </tr></thead>
+          <tbody><tr>
+      <td><strong>08.05</strong></td>
+      <td>Подаков Андрій</td>
+      <td class="n">73</td>
+      <td class="n">1 926</td>
+      <td class="n">245</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+26.4%</span></td></tr><tr>
+      <td><strong>09.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">82</td>
+      <td class="n">2 010</td>
+      <td class="n">260</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+24.5%</span></td></tr><tr>
+      <td><strong>10.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">82</td>
+      <td class="n">2 100</td>
+      <td class="n">240</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+25.6%</span></td></tr><tr>
+      <td><strong>12.05</strong></td>
+      <td>Годасов Андрій</td>
+      <td class="n">74</td>
+      <td class="n">1 882</td>
+      <td class="n">175</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+25.4%</span></td></tr><tr>
+      <td><strong>14.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">66</td>
+      <td class="n">1 727</td>
+      <td class="n">110</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+26.2%</span></td></tr><tr>
+      <td><strong>15.05</strong></td>
+      <td>Вертюх Сергій</td>
+      <td class="n">—</td>
+      <td class="n">489</td>
+      <td class="n">120</td>
+      <td class="n">—</td></tr><tr>
+      <td><strong>17.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">70</td>
+      <td class="n">1 836</td>
+      <td class="n">100</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+26.2%</span></td></tr><tr>
+      <td><strong>18.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">72</td>
+      <td class="n">1 955</td>
+      <td class="n">180</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+27.2%</span></td></tr><tr>
+      <td><strong>19.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">64</td>
+      <td class="n">1 714</td>
+      <td class="n">80</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+26.8%</span></td></tr><tr>
+      <td><strong>20.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">80</td>
+      <td class="n">2 201</td>
+      <td class="n">150</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+27.5%</span></td></tr><tr>
+      <td><strong>21.05</strong></td>
+      <td>Падій Петро</td>
+      <td class="n">66</td>
+      <td class="n">1 574</td>
+      <td class="n">110</td>
+      <td class="n"><span style="color:#9b2335;font-weight:600">+23.8%</span></td></tr></tbody>
+          <tfoot><tr>
+            <td colspan="2" id="tf-total2">РАЗОМ</td>
+            <td class="n">729</td>
+            <td class="n">19,414</td>
+            <td class="n">1,770</td>
+            <td class="n">26.6</td>
+          </tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="sec-title" id="t-sbal">Баланс просочення</span>
+        <span class="sec-sub" id="t-unsoak">непросочені</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th id="th-date3">Дата</th>
+            <th class="n" id="th-start">Поч.</th>
+            <th class="n" id="th-recv">+Надійшло</th>
+            <th class="n" id="th-proc">-Просочено</th>
+            <th class="n" id="th-bal">Залишок</th>
+          </tr></thead>
+          <tbody><tr>
+      <td><strong>06.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">100</td>
+      <td class="n">100</td>
+      <td class="n">0</td></tr><tr>
+      <td><strong>07.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">100</td>
+      <td class="n">100</td>
+      <td class="n">0</td></tr><tr>
+      <td><strong>08.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">100</td>
+      <td class="n">100</td>
+      <td class="n">0</td></tr><tr>
+      <td><strong>09.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">100</td>
+      <td class="n">100</td>
+      <td class="n">0</td></tr><tr>
+      <td><strong>10.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">0</td>
+      <td class="n">0</td>
+      <td class="n">0</td></tr><tr>
+      <td><strong>11.05</strong></td>
+      <td class="n">18</td>
+      <td class="n">216</td>
+      <td class="n">100</td>
+      <td class="n">134</td></tr><tr>
+      <td><strong>12.05</strong></td>
+      <td class="n">134</td>
+      <td class="n">0</td>
+      <td class="n">100</td>
+      <td class="n">34</td></tr><tr>
+      <td><strong>14.05</strong></td>
+      <td class="n">86</td>
+      <td class="n">108</td>
+      <td class="n">100</td>
+      <td class="n">94</td></tr><tr>
+      <td><strong>15.05</strong></td>
+      <td class="n">94</td>
+      <td class="n">108</td>
+      <td class="n">101</td>
+      <td class="n">101</td></tr><tr>
+      <td><strong>16.05</strong></td>
+      <td class="n">101</td>
+      <td class="n">-21</td>
+      <td class="n">0</td>
+      <td class="n">80</td></tr><tr>
+      <td><strong>17.05</strong></td>
+      <td class="n">80</td>
+      <td class="n">0</td>
+      <td class="n">0</td>
+      <td class="n">80</td></tr><tr>
+      <td><strong>18.05</strong></td>
+      <td class="n">80</td>
+      <td class="n">108</td>
+      <td class="n">100</td>
+      <td class="n">88</td></tr><tr>
+      <td><strong>19.05</strong></td>
+      <td class="n">88</td>
+      <td class="n">0</td>
+      <td class="n">0</td>
+      <td class="n">88</td></tr><tr>
+      <td><strong>21.05</strong></td>
+      <td class="n">88</td>
+      <td class="n">0</td>
+      <td class="n">0</td>
+      <td class="n">88</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Просочені катушки -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title" id="t-soaked-coils">Просочені катушки</span>
+      <span class="sec-sub" id="t-soaked-sub">Soaked coils</span>
+    </div>
+    <div class="tbl-wrap">
       <table>
         <thead><tr>
-          <th id="th-date3">Дата</th>
-          <th class="n" id="th-start">Поч.</th>
-          <th class="n" id="th-recv">+Надійшло</th>
-          <th class="n" id="th-proc">-Просочено</th>
-          <th class="n" id="th-bal">Залишок</th>
+          <th id="th-sc-date">Дата</th>
+          <th class="n" id="th-sc-day">Просочено за день</th>
+          <th class="n" id="th-sc-cumul">Накоп. просочено</th>
+          <th class="n" id="th-sc-fire">- Взято на рубку</th>
+          <th class="n" id="th-sc-bal">Залишок просочених</th>
         </tr></thead>
         <tbody><tr>
-          <td>06.05</td>
-          <td class="num">0</td><td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
-          <td>07.05</td>
-          <td class="num">0</td><td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
-          <td>08.05</td>
-          <td class="num">0</td><td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
-          <td>09.05</td>
-          <td class="num">0</td><td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
-          <td>10.05</td>
-          <td class="num">0</td><td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-green">0</span></td></tr><tr>
-          <td>11.05</td>
-          <td class="num">18</td><td class="num">216</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-red">134</span></td></tr><tr>
-          <td>12.05</td>
-          <td class="num">134</td><td class="num">0</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-amber">34</span></td></tr><tr>
-          <td>14.05</td>
-          <td class="num">86</td><td class="num">108</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-red">94</span></td></tr><tr>
-          <td>15.05</td>
-          <td class="num">94</td><td class="num">108</td>
-          <td class="num">101</td>
-          <td class="num"><span class="badge badge-red">101</span></td></tr><tr>
-          <td>16.05</td>
-          <td class="num">101</td><td class="num">-21</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-red">80</span></td></tr><tr>
-          <td>17.05</td>
-          <td class="num">80</td><td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-red">80</span></td></tr><tr>
-          <td>18.05</td>
-          <td class="num">80</td><td class="num">108</td>
-          <td class="num">100</td>
-          <td class="num"><span class="badge badge-red">88</span></td></tr><tr>
-          <td>19.05</td>
-          <td class="num">88</td><td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-red">88</span></td></tr><tr>
-          <td>21.05</td>
-          <td class="num">88</td><td class="num">0</td>
-          <td class="num">0</td>
-          <td class="num"><span class="badge badge-red">88</span></td></tr></tbody>
+      <td><strong>06.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">100</td>
+      <td class="n">—</td>
+      <td class="n"><span style="color:#9b2335;font-weight:700">100</span></td></tr><tr>
+      <td><strong>07.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">200</td>
+      <td class="n">—</td>
+      <td class="n"><span style="color:#c17f24;font-weight:700">200</span></td></tr><tr>
+      <td><strong>08.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">300</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">73</span></td>
+      <td class="n"><span style="color:#c17f24;font-weight:700">227</span></td></tr><tr>
+      <td><strong>09.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">400</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">82</span></td>
+      <td class="n"><span style="color:#c17f24;font-weight:700">245</span></td></tr><tr>
+      <td><strong>10.05</strong></td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">—</td></tr><tr>
+      <td><strong>11.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">500</td>
+      <td class="n">—</td>
+      <td class="n"><span style="color:#c17f24;font-weight:700">263</span></td></tr><tr>
+      <td><strong>12.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">600</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">74</span></td>
+      <td class="n"><span style="color:#c17f24;font-weight:700">289</span></td></tr><tr>
+      <td><strong>14.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">800</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">66</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">423</span></td></tr><tr>
+      <td><strong>15.05</strong></td>
+      <td class="n">101</td>
+      <td class="n">901</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">19</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">505</span></td></tr><tr>
+      <td><strong>16.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">901</td>
+      <td class="n">—</td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">505</span></td></tr><tr>
+      <td><strong>17.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">901</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">70</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">435</span></td></tr><tr>
+      <td><strong>18.05</strong></td>
+      <td class="n">100</td>
+      <td class="n">1001</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">72</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">463</span></td></tr><tr>
+      <td><strong>19.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">1001</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">64</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">399</span></td></tr><tr>
+      <td><strong>21.05</strong></td>
+      <td class="n">0</td>
+      <td class="n">1001</td>
+      <td class="n"><span style="color:#6b3fa0;font-weight:600">66</span></td>
+      <td class="n"><span style="color:#2d5a1b;font-weight:700">333</span></td></tr></tbody>
+        <tfoot><tr>
+          <td id="tf-sc-total">РАЗОМ</td>
+          <td class="n">901</td>
+          <td class="n">1001</td>
+          <td class="n">586</td>
+          <td class="n" style="color:var(--green)">333</td>
+        </tr></tfoot>
       </table>
     </div>
   </div>
 
-  <div class="one">
-    <div class="stitle" style="background:var(--green);color:#fff;padding:.5rem 1rem;border-radius:4px;margin-bottom:.75rem">
-      <span id="t-soaked-coils">ПРОСОЧЕНІ КАТУШКИ</span>
-      <span class="ssub" style="color:rgba(255,255,255,.7)" id="t-soaked-sub">SOAKED COILS</span>
+  <!-- Рух сухих катушок -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="sec-title" id="t-dry">Рух сухих катушок</span>
+      <span class="sec-sub" id="t-daily">щоденний баланс</span>
     </div>
-    <table>
-      <thead><tr>
-        <th id="th-sc-date">Дата</th>
-        <th class="n" id="th-sc-day">Просочено за день</th>
-        <th class="n" id="th-sc-cumul">Накоп. просочено</th>
-        <th class="n" id="th-sc-fire">- Взято на рубку</th>
-        <th class="n" id="th-sc-bal">Залишок просочених</th>
-      </tr></thead>
-      <tbody><tr>
-          <td><strong>06.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">100</td>
-          <td class="num">—</td>
-          <td class="num"><span style="color:#9b2335;font-weight:700">100</span></td></tr><tr>
-          <td><strong>07.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">200</td>
-          <td class="num">—</td>
-          <td class="num"><span style="color:#c17f24;font-weight:700">200</span></td></tr><tr>
-          <td><strong>08.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">300</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">73</span></td>
-          <td class="num"><span style="color:#c17f24;font-weight:700">227</span></td></tr><tr>
-          <td><strong>09.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">400</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">82</span></td>
-          <td class="num"><span style="color:#c17f24;font-weight:700">245</span></td></tr><tr>
-          <td><strong>10.05</strong></td>
-          <td class="num">—</td>
-          <td class="num">—</td>
-          <td class="num">—</td>
-          <td class="num"><span style="">—</span></td></tr><tr>
-          <td><strong>11.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">500</td>
-          <td class="num">—</td>
-          <td class="num"><span style="color:#c17f24;font-weight:700">263</span></td></tr><tr>
-          <td><strong>12.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">600</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">74</span></td>
-          <td class="num"><span style="color:#c17f24;font-weight:700">289</span></td></tr><tr>
-          <td><strong>14.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">800</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">66</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">423</span></td></tr><tr>
-          <td><strong>15.05</strong></td>
-          <td class="num">101</td>
-          <td class="num">901</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">19</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">505</span></td></tr><tr>
-          <td><strong>16.05</strong></td>
-          <td class="num">0</td>
-          <td class="num">901</td>
-          <td class="num">—</td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">505</span></td></tr><tr>
-          <td><strong>17.05</strong></td>
-          <td class="num">0</td>
-          <td class="num">901</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">70</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">435</span></td></tr><tr>
-          <td><strong>18.05</strong></td>
-          <td class="num">100</td>
-          <td class="num">1001</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">72</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">463</span></td></tr><tr>
-          <td><strong>19.05</strong></td>
-          <td class="num">0</td>
-          <td class="num">1001</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">64</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">399</span></td></tr><tr>
-          <td><strong>21.05</strong></td>
-          <td class="num">0</td>
-          <td class="num">1001</td>
-          <td class="num"><span style="color:#6b3fa0;font-weight:600">66</span></td>
-          <td class="num"><span style="color:#2d5a1b;font-weight:700">333</span></td></tr></tbody>
-      <tfoot><tr>
-        <td><strong id="tf-sc-total">РАЗОМ</strong></td>
-        <td class="n"><strong>901</strong></td>
-        <td class="n"><strong>1001</strong></td>
-        <td class="n"><strong>586</strong></td>
-        <td class="n"><strong style="color:var(--green)">333</strong></td>
-      </tr></tfoot>
-    </table>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th id="th-date4">Дата</th>
+          <th class="n" id="th-prod">Вироблено</th>
+          <th class="n" id="th-todr">В сушарки</th>
+          <th class="n" id="th-ship">-Відвант.</th>
+          <th class="n" id="th-whe">Склад кін.</th>
+          <th class="n" id="th-indr">В сушарках</th>
+          <th class="n" id="th-ttl">Загалом</th>
+        </tr></thead>
+        <tbody><tr>
+      <td><strong>11.05</strong></td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">797</td>
+      <td class="n">1 074</td>
+      <td class="n">2 818</td>
+      <td class="n">3 044</td></tr><tr>
+      <td><strong>12.05</strong></td>
+      <td class="n">460</td>
+      <td class="n">1 332</td>
+      <td class="n">800</td>
+      <td class="n">572</td>
+      <td class="n">—</td>
+      <td class="n">2 124</td></tr><tr>
+      <td><strong>13.05</strong></td>
+      <td class="n">958</td>
+      <td class="n">864</td>
+      <td class="n">790</td>
+      <td class="n">279</td>
+      <td class="n">—</td>
+      <td class="n">1 951</td></tr><tr>
+      <td><strong>14.05</strong></td>
+      <td class="n">1 015</td>
+      <td class="n">864</td>
+      <td class="n">796</td>
+      <td class="n">655</td>
+      <td class="n">3 731</td>
+      <td class="n">5 264</td></tr><tr>
+      <td><strong>15.05</strong></td>
+      <td class="n">479</td>
+      <td class="n">864</td>
+      <td class="n">800</td>
+      <td class="n">223</td>
+      <td class="n">4 117</td>
+      <td class="n">5 174</td></tr><tr>
+      <td><strong>16.05</strong></td>
+      <td class="n">304</td>
+      <td class="n">—</td>
+      <td class="n">1 569</td>
+      <td class="n">0</td>
+      <td class="n">2 792</td>
+      <td class="n">2 992</td></tr><tr>
+      <td><strong>17.05</strong></td>
+      <td class="n">1 409</td>
+      <td class="n">864</td>
+      <td class="n">0</td>
+      <td class="n">302</td>
+      <td class="n">3 354</td>
+      <td class="n">4 980</td></tr><tr>
+      <td><strong>18.05</strong></td>
+      <td class="n">546</td>
+      <td class="n">864</td>
+      <td class="n">797</td>
+      <td class="n">389</td>
+      <td class="n">4 091</td>
+      <td class="n">6 454</td></tr><tr>
+      <td><strong>19.05</strong></td>
+      <td class="n">1 073</td>
+      <td class="n">1 584</td>
+      <td class="n">797</td>
+      <td class="n">389</td>
+      <td class="n">3 223</td>
+      <td class="n">6 302</td></tr><tr>
+      <td><strong>20.05</strong></td>
+      <td class="n">998</td>
+      <td class="n">864</td>
+      <td class="n">1 595</td>
+      <td class="n">163</td>
+      <td class="n">3 312</td>
+      <td class="n">4 373</td></tr><tr>
+      <td><strong>21.05</strong></td>
+      <td class="n">583</td>
+      <td class="n">864</td>
+      <td class="n">800</td>
+      <td class="n">340</td>
+      <td class="n">3 312</td>
+      <td class="n">4 260</td></tr><tr>
+      <td><strong>22.05</strong></td>
+      <td class="n">576</td>
+      <td class="n">864</td>
+      <td class="n">800</td>
+      <td class="n">355</td>
+      <td class="n">3 312</td>
+      <td class="n">4 311</td></tr><tr>
+      <td><strong>23.05</strong></td>
+      <td class="n">1 028</td>
+      <td class="n">1 620</td>
+      <td class="n">1 592</td>
+      <td class="n">58</td>
+      <td class="n">2 592</td>
+      <td class="n">4 636</td></tr><tr>
+      <td><strong>24.05</strong></td>
+      <td class="n">454</td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">—</td>
+      <td class="n">—</td></tr></tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="one">
-    <div class="stitle"><span id="t-dry">Рух сухих катушок</span>
-      <span class="ssub" id="t-daily">щоденний баланс</span></div>
-    <table>
-      <thead><tr>
-        <th id="th-date4">Дата</th>
-        <th class="n" id="th-prod">Вироблено</th>
-        <th class="n" id="th-todr">В сушарки</th>
-        <th class="n" id="th-ship">-Відвант.</th>
-        <th class="n" id="th-whe">Склад кін.</th>
-        <th class="n" id="th-indr">В сушарках</th>
-        <th class="n" id="th-ttl">Загалом</th>
-      </tr></thead>
-      <tbody><tr>
-          <td>11.05</td>
-          <td class="num">—</td><td class="num">—</td>
-          <td class="num">797</td>
-          <td class="num"><strong>1 074</strong></td>
-          <td class="num">2 818</td>
-          <td class="num"><strong>3 044</strong></td></tr><tr>
-          <td>12.05</td>
-          <td class="num">460</td><td class="num">1 332</td>
-          <td class="num">800</td>
-          <td class="num"><strong>572</strong></td>
-          <td class="num">—</td>
-          <td class="num"><strong>2 124</strong></td></tr><tr>
-          <td>13.05</td>
-          <td class="num">958</td><td class="num">864</td>
-          <td class="num">790</td>
-          <td class="num"><strong>279</strong></td>
-          <td class="num">—</td>
-          <td class="num"><strong>1 951</strong></td></tr><tr>
-          <td>14.05</td>
-          <td class="num">1 015</td><td class="num">864</td>
-          <td class="num">796</td>
-          <td class="num"><strong>655</strong></td>
-          <td class="num">3 731</td>
-          <td class="num"><strong>5 264</strong></td></tr><tr>
-          <td>15.05</td>
-          <td class="num">479</td><td class="num">864</td>
-          <td class="num">800</td>
-          <td class="num"><strong>223</strong></td>
-          <td class="num">4 117</td>
-          <td class="num"><strong>5 174</strong></td></tr><tr>
-          <td>16.05</td>
-          <td class="num">304</td><td class="num">—</td>
-          <td class="num">1 569</td>
-          <td class="num"><strong>0</strong></td>
-          <td class="num">2 792</td>
-          <td class="num"><strong>2 992</strong></td></tr><tr>
-          <td>17.05</td>
-          <td class="num">1 409</td><td class="num">864</td>
-          <td class="num">0</td>
-          <td class="num"><strong>302</strong></td>
-          <td class="num">3 354</td>
-          <td class="num"><strong>4 980</strong></td></tr><tr>
-          <td>18.05</td>
-          <td class="num">546</td><td class="num">864</td>
-          <td class="num">797</td>
-          <td class="num"><strong>389</strong></td>
-          <td class="num">4 091</td>
-          <td class="num"><strong>6 454</strong></td></tr><tr>
-          <td>19.05</td>
-          <td class="num">1 073</td><td class="num">1 584</td>
-          <td class="num">797</td>
-          <td class="num"><strong>389</strong></td>
-          <td class="num">3 223</td>
-          <td class="num"><strong>6 302</strong></td></tr><tr>
-          <td>20.05</td>
-          <td class="num">998</td><td class="num">864</td>
-          <td class="num">1 595</td>
-          <td class="num"><strong>163</strong></td>
-          <td class="num">3 312</td>
-          <td class="num"><strong>4 373</strong></td></tr><tr>
-          <td>21.05</td>
-          <td class="num">583</td><td class="num">864</td>
-          <td class="num">800</td>
-          <td class="num"><strong>340</strong></td>
-          <td class="num">3 312</td>
-          <td class="num"><strong>4 260</strong></td></tr><tr>
-          <td>22.05</td>
-          <td class="num">576</td><td class="num">864</td>
-          <td class="num">800</td>
-          <td class="num"><strong>355</strong></td>
-          <td class="num">3 312</td>
-          <td class="num"><strong>4 311</strong></td></tr><tr>
-          <td>23.05</td>
-          <td class="num">1 028</td><td class="num">1 620</td>
-          <td class="num">1 592</td>
-          <td class="num"><strong>58</strong></td>
-          <td class="num">2 592</td>
-          <td class="num"><strong>4 636</strong></td></tr><tr>
-          <td>24.05</td>
-          <td class="num">454</td><td class="num">—</td>
-          <td class="num">—</td>
-          <td class="num"><strong>—</strong></td>
-          <td class="num">—</td>
-          <td class="num"><strong>—</strong></td></tr></tbody>
-    </table>
-  </div>
 </main>
 
 <footer>
   <div class="fbrand">Весели Бобри · woodwool.com.ua</div>
   <div class="fmeta">
     <span id="f-facility">Козелецький цех · Многоліт А.Д.</span><br>
-    <span id="f-auto">Оновлено автоматично</span> · 24.05.2026 09:57
+    <span id="f-auto">Оновлено автоматично</span> · 24.05.2026 10:54
   </div>
 </footer>
 
@@ -526,19 +643,19 @@ const T = {
     "lbl-coils":"Котушок просочено","lbl-gain":"Середній приріст",
     "lbl-fire":"кг розпалювача","lbl-stock":"Загальний запас",
     "ch1-title":"Середня вага по днях","ch2-title":"Приріст після просочення %",
-    "t-soaked-coils":"ПРОСОЧЕНІ КАТУШКИ","t-soaked-sub":"SOAKED COILS",
-    "th-sc-date":"Дата","th-sc-day":"Просочено за день","th-sc-cumul":"Накоп. просочено",
-    "th-sc-fire":"- Взято на рубку","th-sc-bal":"Залишок просочених","tf-sc-total":"РАЗОМ",
     "t-soak":"Журнал зважування","t-fire":"Рубка розпалювача",
-    "t-shifts":"змін","t-sbal":"Баланс просочення","t-unsoak":"непросочені",
+    "t-shifts":"11 змін","t-sbal":"Баланс просочення","t-unsoak":"непросочені",
+    "t-soaked-coils":"Просочені катушки","t-soaked-sub":"Soaked coils",
     "t-dry":"Рух сухих катушок","t-daily":"щоденний баланс",
-    "th-date1":"Дата","th-date2":"Дата","th-date3":"Дата","th-date4":"Дата",
+    "th-date1":"Дата","th-date2":"Дата","th-date3":"Дата","th-date4":"Дата","th-sc-date":"Дата",
     "th-pairs":"Пар","th-dry":"Суха, кг","th-soaked":"Просочена, кг","th-gain":"Приріст",
     "th-worker":"Працівник","th-coils":"Кот.","th-waste":"Відх.","th-yield":"Вихід",
     "th-start":"Поч.","th-recv":"+Надійшло","th-proc":"-Просочено","th-bal":"Залишок",
+    "th-sc-day":"Просочено за день","th-sc-cumul":"Накоп. просочено",
+    "th-sc-fire":"- Взято на рубку","th-sc-bal":"Залишок просочених",
     "th-prod":"Вироблено","th-todr":"В сушарки","th-ship":"-Відвант.",
     "th-whe":"Склад кін.","th-indr":"В сушарках","th-ttl":"Загалом",
-    "tf-total":"РАЗОМ","tf-total2":"РАЗОМ",
+    "tf-total":"РАЗОМ","tf-total2":"РАЗОМ","tf-sc-total":"РАЗОМ",
     "f-facility":"Козелецький цех · Многоліт А.Д.","f-auto":"Оновлено автоматично"
   },
   en: {
@@ -548,30 +665,29 @@ const T = {
     "lbl-coils":"Coils soaked","lbl-gain":"Avg weight gain",
     "lbl-fire":"kg fire starters","lbl-stock":"Total coil stock",
     "ch1-title":"Avg coil weight by day","ch2-title":"Weight gain after soaking %",
-    "t-soaked-coils":"SOAKED COILS","t-soaked-sub":"ПРОСОЧЕНІ КАТУШКИ",
-    "th-sc-date":"Date","th-sc-day":"Soaked per day","th-sc-cumul":"Cumul. soaked",
-    "th-sc-fire":"- Used for fire starters","th-sc-bal":"Soaked balance","tf-sc-total":"TOTAL",
     "t-soak":"Soaking Log","t-fire":"Fire Starter Production",
-    "t-shifts":"shifts","t-sbal":"Soaking Balance","t-unsoak":"unsoaked coils",
+    "t-shifts":"11 shifts","t-sbal":"Soaking Balance","t-unsoak":"unsoaked coils",
+    "t-soaked-coils":"Soaked Coils","t-soaked-sub":"Просочені катушки",
     "t-dry":"Dry Coil Movement","t-daily":"daily balance",
-    "th-date1":"Date","th-date2":"Date","th-date3":"Date","th-date4":"Date",
+    "th-date1":"Date","th-date2":"Date","th-date3":"Date","th-date4":"Date","th-sc-date":"Date",
     "th-pairs":"Pairs","th-dry":"Dry, kg","th-soaked":"Soaked, kg","th-gain":"Gain",
     "th-worker":"Worker","th-coils":"Coils","th-waste":"Waste","th-yield":"Yield",
     "th-start":"Start","th-recv":"+Received","th-proc":"-Soaked","th-bal":"Balance",
+    "th-sc-day":"Soaked per day","th-sc-cumul":"Cumul. soaked",
+    "th-sc-fire":"- Used for fire starters","th-sc-bal":"Soaked balance",
     "th-prod":"Produced","th-todr":"To dryers","th-ship":"-Shipped",
     "th-whe":"Warehouse end","th-indr":"In dryers","th-ttl":"Total",
-    "tf-total":"TOTAL","tf-total2":"TOTAL",
+    "tf-total":"TOTAL","tf-total2":"TOTAL","tf-sc-total":"TOTAL",
     "f-facility":"Kozеlets facility · Mnoholit A.D.","f-auto":"Auto-generated"
   }
 };
 
-let curLang = localStorage.getItem('vb_lang') || 'uk';
-
+let curLang = localStorage.getItem("vb_lang") || "uk";
 function setLang(lang) {
   curLang = lang;
-  localStorage.setItem('vb_lang', lang);
-  document.getElementById('btn-uk').className = 'lng' + (lang==='uk' ? ' on' : '');
-  document.getElementById('btn-en').className = 'lng' + (lang==='en' ? ' on' : '');
+  localStorage.setItem("vb_lang", lang);
+  document.getElementById("btn-uk").className = "lng" + (lang==="uk" ? " on" : "");
+  document.getElementById("btn-en").className = "lng" + (lang==="en" ? " on" : "");
   document.documentElement.lang = lang;
   const d = T[lang];
   for (const [id, txt] of Object.entries(d)) {
@@ -579,33 +695,32 @@ function setLang(lang) {
     if (el) el.textContent = txt;
   }
 }
-
 setLang(curLang);
 
-const INK='#1a1a0f',GREEN='#2d5a1b',AMBER='#c17f24';
+const INK="#1a1a0f",GREEN="#2d5a1b",AMBER="#c17f24";
 const DAYS=["06.05", "07.05", "08.05", "09.05", "11.05", "12.05", "13.05", "14.05", "15.05", "18.05"],DRY=[13.17, 12.99, 13.55, 12.79, 12.87, 12.95, 13.71, 13.04, 13.18, 12.84],SOAK=[28.01, 27.91, 28.81, 27.53, 27.55, 28.59, 28.63, 28.12, 28.33, 27.22],GAINS=[112.8, 114.9, 112.6, 115.2, 114.2, 120.8, 108.8, 115.6, 114.9, 111.8];
 
-new Chart(document.getElementById('wChart'),{
-  type:'bar',data:{labels:DAYS,datasets:[
-    {label:'Суха / Dry (кг)',data:DRY,backgroundColor:'rgba(30,58,95,.85)',borderRadius:2,borderWidth:0},
-    {label:'Просочена / Soaked (кг)',data:SOAK,backgroundColor:'rgba(193,127,36,.85)',borderRadius:2,borderWidth:0}
+new Chart(document.getElementById("wChart"),{
+  type:"bar",data:{labels:DAYS,datasets:[
+    {label:"Суха / Dry (кг)",data:DRY,backgroundColor:"rgba(30,58,95,.85)",borderRadius:3,borderWidth:0},
+    {label:"Просочена / Soaked (кг)",data:SOAK,backgroundColor:"rgba(193,127,36,.85)",borderRadius:3,borderWidth:0}
   ]},
   options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{font:{family:'DM Mono',size:10},color:INK}}},
-    scales:{x:{grid:{display:false},ticks:{font:{family:'DM Mono',size:10},color:INK}},
-             y:{grid:{color:'rgba(26,26,15,.06)'},ticks:{font:{family:'DM Mono',size:10},color:INK},min:10}}}
+    plugins:{legend:{labels:{font:{family:"DM Mono",size:10},color:INK}}},
+    scales:{x:{grid:{display:false},ticks:{font:{family:"DM Mono",size:10},color:INK}},
+             y:{grid:{color:"rgba(26,26,15,.06)"},ticks:{font:{family:"DM Mono",size:10},color:INK},min:10}}}
 });
-new Chart(document.getElementById('gChart'),{
-  type:'line',data:{labels:DAYS,datasets:[{
-    label:'Приріст / Gain %',data:GAINS,borderColor:GREEN,
-    backgroundColor:'rgba(45,90,27,.08)',borderWidth:2,
+new Chart(document.getElementById("gChart"),{
+  type:"line",data:{labels:DAYS,datasets:[{
+    label:"Приріст / Gain %",data:GAINS,borderColor:GREEN,
+    backgroundColor:"rgba(45,90,27,.08)",borderWidth:2,
     pointBackgroundColor:GREEN,pointRadius:4,fill:true,tension:.3
   }]},
   options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{font:{family:'DM Mono',size:10},color:INK}}},
-    scales:{x:{grid:{display:false},ticks:{font:{family:'DM Mono',size:10},color:INK}},
-             y:{grid:{color:'rgba(26,26,15,.06)'},
-                ticks:{font:{family:'DM Mono',size:10},color:INK,callback:v=>v+'%'},
+    plugins:{legend:{labels:{font:{family:"DM Mono",size:10},color:INK}}},
+    scales:{x:{grid:{display:false},ticks:{font:{family:"DM Mono",size:10},color:INK}},
+             y:{grid:{color:"rgba(26,26,15,.06)"},
+                ticks:{font:{family:"DM Mono",size:10},color:INK,callback:v=>v+"%"},
                 min:100,max:125}}}
 });
 </script>
