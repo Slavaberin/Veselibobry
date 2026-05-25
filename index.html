@@ -110,20 +110,20 @@ footer{background:var(--cream);border-top:1px solid var(--rule);
 <header>
   <div class="htop">
     <div>
-      <div class="brand">Весели <span>Бобри</span></div>
+      <div class="brand" id="brand-name">Весели <span>Бобри</span></div>
       <div class="tagline" id="tagline">Woodwool.com.ua · Виробничий звіт</div>
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 25.05.2026 17:10<br>
+      <span id="updated-lbl">Оновлено</span>: 25.05.2026 17:16<br>
       <span class="period" id="current-lbl">Актуально на 18.05</span>
     </div>
   </div>
   <div class="hstats">
     <div class="hstat"><div class="hval">1,001</div>
       <div class="hlbl" id="lbl-coils">Котушок просочено</div></div>
-    <div class="hstat"><div class="hval">+114%</div>
-      <div class="hlbl" id="lbl-gain">Середній приріст</div></div>
+    <div class="hstat"><div class="hval">12,886</div>
+      <div class="hlbl" id="lbl-gain">Вироблено цього місяця</div></div>
     <div class="hstat"><div class="hval">21,184</div>
       <div class="hlbl" id="lbl-fire">кг розпалювача</div></div>
     <div class="hstat"><div class="hval">4348</div>
@@ -653,17 +653,18 @@ footer{background:var(--cream);border-top:1px solid var(--rule);
   <div class="fbrand">Весели Бобри · woodwool.com.ua</div>
   <div class="fmeta">
     <span id="f-facility">Козелецький цех · Многоліт А.Д.</span><br>
-    <span id="f-auto">Оновлено автоматично</span> · 25.05.2026 17:10
+    <span id="f-auto">Оновлено автоматично</span> · 25.05.2026 17:16
   </div>
 </footer>
 
 <script>
 const T = {
   uk: {
+    "brand-name": "Весели <span style='color:var(--amber)'>Бобри</span>",
     tagline:"Woodwool.com.ua · Виробничий звіт",
     facility:"Козелець · Козелецький цех",
     "updated-lbl":"Оновлено","current-lbl":"Актуально на 18.05",
-    "lbl-coils":"Котушок просочено","lbl-gain":"Середній приріст",
+    "lbl-coils":"Котушок просочено","lbl-gain":"Вироблено цього місяця",
     "lbl-fire":"кг розпалювача","lbl-stock":"Загальний запас",
     "ch1-title":"Середня вага по днях","ch2-title":"Приріст після просочення %",
     "t-soak":"Журнал зважування","t-fire":"Рубка розпалювача",
@@ -682,10 +683,11 @@ const T = {
     "f-facility":"Козелецький цех · Многоліт А.Д.","f-auto":"Оновлено автоматично"
   },
   en: {
+    "brand-name": "Veseli <span style='color:var(--amber)'>Bobry</span> <span style='font-size:1.1rem;font-weight:400;color:rgba(245,240,232,.4)'>(Kozelets)</span>",
     tagline:"Woodwool.com.ua · Production Report",
-    facility:"Kozеlets · Production facility",
+    facility:"Kozelets · Production Facility",
     "updated-lbl":"Updated","current-lbl":"Current as of 18.05",
-    "lbl-coils":"Coils soaked","lbl-gain":"Avg weight gain",
+    "lbl-coils":"Coils soaked","lbl-gain":"Produced this month",
     "lbl-fire":"kg fire starters","lbl-stock":"Total coil stock",
     "ch1-title":"Avg coil weight by day","ch2-title":"Weight gain after soaking %",
     "t-soak":"Soaking Log","t-fire":"Fire Starter Production",
@@ -715,7 +717,10 @@ function setLang(lang) {
   const d = T[lang];
   for (const [id, txt] of Object.entries(d)) {
     const el = document.getElementById(id);
-    if (el) el.textContent = txt;
+    if (!el) continue;
+    // brand-name містить HTML (span) — використовуємо innerHTML
+    if (id === "brand-name") { el.innerHTML = txt; }
+    else { el.textContent = txt; }
   }
 }
 setLang(curLang);
