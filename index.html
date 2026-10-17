@@ -163,7 +163,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 17.10.2026 09:42<br>
+      <span id="updated-lbl">Оновлено</span>: 17.10.2026 12:48<br>
       <span class="period" id="current-lbl">Актуально на 12.10</span><br>
       <select class="psel" id="period-sel" onchange="applyPeriod(this.value)"><option value="all">Всі періоди</option><option value="2025-09">2025-09</option><option value="2025-10">2025-10</option><option value="2025-11">2025-11</option><option value="2025-12">2025-12</option><option value="2026-01">2026-01</option><option value="2026-02">2026-02</option><option value="2026-03">2026-03</option><option value="2026-04">2026-04</option><option value="2026-05">2026-05</option><option value="2026-06">2026-06</option><option value="2026-07">2026-07</option><option value="2026-08">2026-08</option><option value="2026-09">2026-09</option><option value="2026-10">2026-10</option></select>
     </div>
@@ -2642,7 +2642,10 @@ const T = {
   }
 };
 
-let curLang = localStorage.getItem("vb_lang") || "uk";
+let curLang = (()=>{ /* ?lang=en|uk у посиланні має пріоритет і запам'ятовується */
+  const q = new URLSearchParams(location.search).get("lang");
+  if (q==="en" || q==="uk") { try{ localStorage.setItem("vb_lang", q); }catch(e){} return q; }
+  try{ return localStorage.getItem("vb_lang") || "uk"; }catch(e){ return "uk"; } })();
 function setLang(lang) {
   curLang = lang;
   localStorage.setItem("vb_lang", lang);
