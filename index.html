@@ -2,6 +2,15 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="theme-color" content="#1a1a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ВБ Виробництво">
+<meta name="format-detection" content="telephone=no">
 <title>Весели Бобри · Production Report</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:wght@400;600;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -116,6 +125,14 @@ footer{background:var(--cream);border-top:1px solid var(--rule);
 .vtab-btn.on{color:var(--paper);border-bottom-color:var(--amber)}
 .vtab-btn:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
 .vtab{display:none}.vtab.on{display:block}
+/* PWA / iPhone */
+.vtabs{position:sticky;top:0;z-index:60}
+footer{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
+@media(max-width:760px){.vtab-btn{min-height:48px;font-size:.7rem;padding:.9rem 1rem}
+  .vtabs{-webkit-overflow-scrolling:touch;scrollbar-width:none}.vtabs::-webkit-scrollbar{display:none}}
+@media(display-mode:standalone){body{-webkit-user-select:none;user-select:none}
+  td,th,.hval{-webkit-user-select:text;user-select:text}}
+
 .hs-tab{display:none}.hs-tab.on{display:grid}
 .qnote{font-family:"DM Mono",monospace;font-size:.62rem;letter-spacing:.06em;color:rgba(26,26,15,.55);
   margin:-1.2rem 0 2rem}
@@ -146,7 +163,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 17.10.2026 09:17<br>
+      <span id="updated-lbl">Оновлено</span>: 17.10.2026 09:22<br>
       <span class="period" id="current-lbl">Актуально на 12.10</span><br>
       <select class="psel" id="period-sel" onchange="applyPeriod(this.value)"><option value="all">Всі періоди</option><option value="2025-09">2025-09</option><option value="2025-10">2025-10</option><option value="2025-11">2025-11</option><option value="2025-12">2025-12</option><option value="2026-01">2026-01</option><option value="2026-02">2026-02</option><option value="2026-03">2026-03</option><option value="2026-04">2026-04</option><option value="2026-05">2026-05</option><option value="2026-06">2026-06</option><option value="2026-07">2026-07</option><option value="2026-08">2026-08</option><option value="2026-09">2026-09</option><option value="2026-10">2026-10</option></select>
     </div>
@@ -2779,6 +2796,7 @@ function applyPeriod(ym) {
 window.__vbReady = true;
 applyPeriod("all");
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});}</script>
 
 <script>
 (function(){
