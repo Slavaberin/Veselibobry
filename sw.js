@@ -1,7 +1,7 @@
 /* Веселі Бобри — service worker.
    Сторінка: спершу мережа (свіжі дані), без зв'язку — остання збережена версія.
    Іконки, Chart.js, шрифти: з кешу, оновлюються у фоні. */
-const CACHE = "vb-v1";
+const CACHE = "vb-v2";
 const CORE = ["./", "./manifest.webmanifest", "./icon-192.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
