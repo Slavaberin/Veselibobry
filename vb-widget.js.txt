@@ -1,10 +1,14 @@
 // VB · Віджет виробництва «Веселі бобри»
 // Scriptable → новий скрипт → вставити цей текст → назвати «VB».
-// Дані: https://veselibobry.netlify.app/widget.json (оновлюються разом із сайтом).
+// Дані: widget.json з сайту, запасне джерело — GitHub (оновлюються разом із сайтом). Версія 2.
 // Розміри: малий (3 показники) і середній (5 показників).
 
 const SITE = "https://veselibobry.netlify.app/";
-const DATA_URL = SITE + "widget.json";
+// Джерела даних по черзі: сайт → GitHub (якщо Netlify ще не опублікував або недоступний)
+const SOURCES = [
+  SITE + "widget.json",
+  "https://raw.githubusercontent.com/Slavaberin/Veselibobry/main/widget.json",
+];
 const C = {
   bg: new Color("#1a1a0f"),
   paper: new Color("#f5f0e8"),
@@ -18,13 +22,22 @@ const C = {
 // ── дані: мережа, без зв'язку — остання збережена копія ──
 const fm = FileManager.local();
 const cachePath = fm.joinPath(fm.documentsDirectory(), "vb-widget-cache.json");
-let d = null, offline = false;
-try {
-  const req = new Request(DATA_URL + "?t=" + Date.now());
-  req.timeoutInterval = 15;
-  d = await req.loadJSON();
-  fm.writeString(cachePath, JSON.stringify(d));
-} catch (e) {
+let d = null, offline = false, errs = [];
+for (const url of SOURCES) {
+  try {
+    const req = new Request(url + "?t=" + Date.now());
+    req.timeoutInterval = 15;
+    const txt = await req.loadString();
+    const code = req.response ? req.response.statusCode : 200;
+    if (code !== 200) throw new Error("HTTP " + code);
+    d = JSON.parse(txt);
+    fm.writeString(cachePath, JSON.stringify(d));
+    break;
+  } catch (e) {
+    errs.push((url.includes("github") ? "GitHub: " : "Сайт: ") + String(e.message || e).slice(0, 60));
+  }
+}
+if (!d) {
   offline = true;
   if (fm.fileExists(cachePath)) d = JSON.parse(fm.readString(cachePath));
 }
@@ -53,8 +66,10 @@ if (family !== "small" && d) {
 w.addSpacer(family === "small" ? 6 : 8);
 
 if (!d) {
-  const t = w.addText("Немає даних.\nПеревірте інтернет.");
+  const t = w.addText("Немає даних.");
   t.font = Font.systemFont(12); t.textColor = C.paper;
+  const e = w.addText(errs.join("\n"));
+  e.font = Font.mediumMonospacedSystemFont(9); e.textColor = C.muted;
 } else {
   const rows = [];
   rows.push({ label: family === "small" ? "Вироблено" : "Вироблено (" + (d.prod_last ? d.prod_last.date : "—") + ")",
