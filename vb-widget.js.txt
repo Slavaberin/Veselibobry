@@ -1,0 +1,97 @@
+// VB · Віджет виробництва «Веселі бобри»
+// Scriptable → новий скрипт → вставити цей текст → назвати «VB».
+// Дані: https://veselibobry.netlify.app/widget.json (оновлюються разом із сайтом).
+// Розміри: малий (3 показники) і середній (5 показників).
+
+const SITE = "https://veselibobry.netlify.app/";
+const DATA_URL = SITE + "widget.json";
+const C = {
+  bg: new Color("#1a1a0f"),
+  paper: new Color("#f5f0e8"),
+  muted: new Color("#f5f0e8", 0.5),
+  amber: new Color("#c17f24"),
+  good: new Color("#5fa046"),
+  warn: new Color("#c17f24"),
+  bad: new Color("#d0503c"),
+};
+
+// ── дані: мережа, без зв'язку — остання збережена копія ──
+const fm = FileManager.local();
+const cachePath = fm.joinPath(fm.documentsDirectory(), "vb-widget-cache.json");
+let d = null, offline = false;
+try {
+  const req = new Request(DATA_URL + "?t=" + Date.now());
+  req.timeoutInterval = 15;
+  d = await req.loadJSON();
+  fm.writeString(cachePath, JSON.stringify(d));
+} catch (e) {
+  offline = true;
+  if (fm.fileExists(cachePath)) d = JSON.parse(fm.readString(cachePath));
+}
+
+const fmt = n => (n == null ? "—" : Math.round(n).toLocaleString("uk-UA").replace(/,/g, " "));
+const family = config.widgetFamily || "medium";
+const w = new ListWidget();
+w.backgroundColor = C.bg;
+w.url = SITE;
+w.setPadding(14, 16, 12, 16);
+w.refreshAfterDate = new Date(Date.now() + 15 * 60 * 1000);
+
+// ── шапка: VB · дата ──
+const head = w.addStack();
+head.centerAlignContent();
+const v = head.addText("V"); v.font = Font.boldSystemFont(16); v.textColor = C.paper;
+const b = head.addText("B"); b.font = Font.boldSystemFont(16); b.textColor = C.amber;
+head.addSpacer(6);
+const hd = head.addText(d && d.prod_last ? d.prod_last.date : "");
+hd.font = Font.mediumMonospacedSystemFont(11); hd.textColor = C.muted;
+head.addSpacer();
+if (family !== "small" && d) {
+  const up = head.addText((offline ? "офлайн · " : "") + (d.updated || "").slice(11));
+  up.font = Font.mediumMonospacedSystemFont(10); up.textColor = offline ? C.bad : C.muted;
+}
+w.addSpacer(family === "small" ? 6 : 8);
+
+if (!d) {
+  const t = w.addText("Немає даних.\nПеревірте інтернет.");
+  t.font = Font.systemFont(12); t.textColor = C.paper;
+} else {
+  const rows = [];
+  rows.push({ label: family === "small" ? "Вироблено" : "Вироблено (" + (d.prod_last ? d.prod_last.date : "—") + ")",
+              value: d.prod_last ? fmt(d.prod_last.value) : "—", unit: "кат" });
+  if (family !== "small") rows.push({ label: "Цей місяць", value: fmt(d.prod_month), unit: "кат" });
+  rows.push({ label: family === "small" ? "Запас" : "Загальний запас", value: d.stock ? fmt(d.stock.value) : "—", unit: "" });
+  rows.push({ label: family === "small" ? "Стеарин" : "Частка стеарину",
+              value: d.stearic ? d.stearic.value.toFixed(1) : "—", unit: "%", status: d.stearic && d.stearic.status });
+  if (family !== "small")
+    rows.push({ label: "Дефекти QM", value: d.qm ? d.qm.value.toFixed(1) : "—", unit: "%", status: d.qm && d.qm.status });
+
+  const big = family === "small";
+  rows.forEach((r, i) => {
+    const s = w.addStack();
+    s.centerAlignContent();
+    const l = s.addText(r.label);
+    l.font = Font.systemFont(big ? 11 : 12); l.textColor = C.muted; l.lineLimit = 1;
+    s.addSpacer();
+    const val = s.addText(r.value);
+    val.font = Font.boldMonospacedSystemFont(big ? 14 : 13);
+    val.textColor = i === 0 ? C.amber : C.paper;
+    if (r.unit) {
+      s.addSpacer(2);
+      const u = s.addText(r.unit); u.font = Font.mediumMonospacedSystemFont(10); u.textColor = C.muted;
+    }
+    s.addSpacer(4);
+    const dot = s.addText(r.status ? "●" : " ");
+    dot.font = Font.systemFont(9);
+    dot.textColor = r.status === "good" ? C.good : r.status === "warn" ? C.warn : r.status === "bad" ? C.bad : C.bg;
+    if (i < rows.length - 1) w.addSpacer(big ? 5 : 3);
+  });
+}
+w.addSpacer();
+
+if (config.runsInWidget) {
+  Script.setWidget(w);
+} else {
+  await w.presentMedium();
+}
+Script.complete();
