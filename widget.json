@@ -1,14 +1,14 @@
 {
- "updated": "17.10.2026 20:03",
+ "updated": "18.10.2026 07:48",
  "v": 1,
  "prod_last": {
-  "date": "16.10",
-  "value": 1108
+  "date": "17.10",
+  "value": 560
  },
- "prod_month": 16336,
+ "prod_month": 16896,
  "stock": {
   "date": "17.10",
-  "value": 3027
+  "value": 3891
  },
  "stearic": {
   "date": "12.10",
