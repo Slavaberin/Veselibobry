@@ -1,6 +1,6 @@
 // VB · Production widget «Veseli bobry» (English)
 // Scriptable → new script → paste this text → name it «VB».
-// Data: widget.json from the site, fallback — GitHub (updated together with the site). Version 2 EN.
+// Data: widget.json from the site, fallback — GitHub (updated together with the site). Version 3 EN.
 // Sizes: small (3 metrics) and medium (5 metrics).
 
 const SITE = "https://veselibobry.netlify.app/";
@@ -17,6 +17,7 @@ const C = {
   good: new Color("#5fa046"),
   warn: new Color("#c17f24"),
   bad: new Color("#d0503c"),
+  neutral: new Color("#f5f0e8", 0.35),
 };
 
 // ── data: network; offline → last saved copy ──
@@ -73,7 +74,7 @@ if (!d) {
 } else {
   const rows = [];
   rows.push({ label: family === "small" ? "Produced" : "Produced (" + (d.prod_last ? d.prod_last.date : "—") + ")",
-              value: d.prod_last ? fmt(d.prod_last.value) : "—", unit: "coils" });
+              status: d.prod_last && d.prod_last.status, value: d.prod_last ? fmt(d.prod_last.value) : "—", unit: "coils" });
   if (family !== "small") rows.push({ label: "This month", value: fmt(d.prod_month), unit: "coils" });
   rows.push({ label: family === "small" ? "Stock" : "Total coil stock", value: d.stock ? fmt(d.stock.value) : "—", unit: "" });
   rows.push({ label: family === "small" ? "Stearic" : "Stearic share",
@@ -98,7 +99,7 @@ if (!d) {
     s.addSpacer(4);
     const dot = s.addText(r.status ? "●" : " ");
     dot.font = Font.systemFont(9);
-    dot.textColor = r.status === "good" ? C.good : r.status === "warn" ? C.warn : r.status === "bad" ? C.bad : C.bg;
+    dot.textColor = r.status === "good" ? C.good : r.status === "warn" ? C.warn : r.status === "bad" ? C.bad : r.status === "neutral" ? C.neutral : C.bg;
     if (i < rows.length - 1) w.addSpacer(big ? 5 : 3);
   });
 }

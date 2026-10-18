@@ -1,6 +1,6 @@
 // VB · Віджет виробництва «Веселі бобри»
 // Scriptable → новий скрипт → вставити цей текст → назвати «VB».
-// Дані: widget.json з сайту, запасне джерело — GitHub (оновлюються разом із сайтом). Версія 2.
+// Дані: widget.json з сайту, запасне джерело — GitHub (оновлюються разом із сайтом). Версія 3.
 // Розміри: малий (3 показники) і середній (5 показників).
 
 const SITE = "https://veselibobry.netlify.app/";
@@ -17,6 +17,7 @@ const C = {
   good: new Color("#5fa046"),
   warn: new Color("#c17f24"),
   bad: new Color("#d0503c"),
+  neutral: new Color("#f5f0e8", 0.35),
 };
 
 // ── дані: мережа, без зв'язку — остання збережена копія ──
@@ -73,7 +74,7 @@ if (!d) {
 } else {
   const rows = [];
   rows.push({ label: family === "small" ? "Вироблено" : "Вироблено (" + (d.prod_last ? d.prod_last.date : "—") + ")",
-              value: d.prod_last ? fmt(d.prod_last.value) : "—", unit: "кат" });
+              status: d.prod_last && d.prod_last.status, value: d.prod_last ? fmt(d.prod_last.value) : "—", unit: "кат" });
   if (family !== "small") rows.push({ label: "Цей місяць", value: fmt(d.prod_month), unit: "кат" });
   rows.push({ label: family === "small" ? "Запас" : "Загальний запас", value: d.stock ? fmt(d.stock.value) : "—", unit: "" });
   rows.push({ label: family === "small" ? "Стеарин" : "Частка стеарину",
@@ -98,7 +99,7 @@ if (!d) {
     s.addSpacer(4);
     const dot = s.addText(r.status ? "●" : " ");
     dot.font = Font.systemFont(9);
-    dot.textColor = r.status === "good" ? C.good : r.status === "warn" ? C.warn : r.status === "bad" ? C.bad : C.bg;
+    dot.textColor = r.status === "good" ? C.good : r.status === "warn" ? C.warn : r.status === "bad" ? C.bad : r.status === "neutral" ? C.neutral : C.bg;
     if (i < rows.length - 1) w.addSpacer(big ? 5 : 3);
   });
 }
