@@ -1,27 +1,27 @@
 {
- "updated": "28.10.2026 16:01",
+ "updated": "28.10.2026 20:41",
  "v": 1,
  "prod_last": {
-  "date": "27.10",
-  "value": 983,
-  "prev": 972,
-  "prev_date": "26.10",
-  "change": 1.1,
-  "status": "neutral"
+  "date": "28.10",
+  "value": 606,
+  "prev": 983,
+  "prev_date": "27.10",
+  "change": -38.4,
+  "status": "bad"
  },
- "prod_month": 27577,
+ "prod_month": 28183,
  "stock": {
-  "date": "27.10",
-  "value": 4462
+  "date": "28.10",
+  "value": 4282
  },
  "stearic": {
-  "date": "27.10",
-  "value": 57.7,
+  "date": "28.10",
+  "value": 54.4,
   "status": "bad"
  },
  "qm": {
-  "date": "27.10",
-  "value": 39.2,
+  "date": "28.10",
+  "value": 41.2,
   "status": "bad"
  }
 }
