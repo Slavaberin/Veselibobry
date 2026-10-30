@@ -163,7 +163,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 30.10.2026 18:31<br>
+      <span id="updated-lbl">Оновлено</span>: 30.10.2026 18:35<br>
       <span class="period" id="current-lbl">Актуально на 30.10</span><br>
       <select class="psel" id="period-sel" onchange="applyPeriod(this.value)"><option value="all">Всі періоди</option><option value="2025-09">2025-09</option><option value="2025-10">2025-10</option><option value="2025-11">2025-11</option><option value="2025-12">2025-12</option><option value="2026-01">2026-01</option><option value="2026-02">2026-02</option><option value="2026-03">2026-03</option><option value="2026-04">2026-04</option><option value="2026-05">2026-05</option><option value="2026-06">2026-06</option><option value="2026-07">2026-07</option><option value="2026-08">2026-08</option><option value="2026-09">2026-09</option><option value="2026-10">2026-10</option></select>
     </div>
@@ -1402,7 +1402,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     <div class="sec-head"><span class="sec-title" id="n-t-log">Журнал змін</span><span class="sec-sub" id="n-t-sub">лічильник «sticks made» · лінія KAZ2400</span></div>
     <div class="tbl-wrap" id="nTblWrap"></div>
   </div>
-  <div class="qnote" id="n-src">Джерело: фото панелі Siemens HMI у групі «Немирів Виробництво». Фото до 12:00 — нічна зміна, з 12:00 — денна; дата — день фото.</div>
+  <div class="qnote" id="n-src">Джерело: фото панелі Siemens HMI у групі «Немирів Виробництво». Фото 06:30–11:00 — нічна зміна, 19:00–23:00 — денна; дата — день фото.</div>
 </main>
 
 <main id="tab-quality" class="vtab">
@@ -3402,11 +3402,11 @@ const ND = [{"date": "30.10.2026", "ym": "2026-10", "shift": "night", "sticks": 
 const T = {uk:{"n-ch1":"Палки по днях · день / ніч","n-l-day":"День","n-l-night":"Ніч","n-t-log":"Журнал змін",
   "n-t-sub":"лічильник «sticks made» · лінія KAZ2400","n-l0":"Палок за останню добу","n-l1":"Цей місяць","n-l1p":"За період",
   "n-l2":"Середнє на зміну","n-l3":"Змін","date":"Дата","day":"День","night":"Ніч","tot":"Разом","tf":"РАЗОМ","empty":"Даних за цей період немає.",
-  "n-src":"Джерело: фото панелі Siemens HMI у групі «Немирів Виробництво». Фото до 12:00 — нічна зміна, з 12:00 — денна; дата — день фото."},
+  "n-src":"Джерело: фото панелі Siemens HMI у групі «Немирів Виробництво». Фото 06:30–11:00 — нічна зміна, 19:00–23:00 — денна; дата — день фото."},
  en:{"n-ch1":"Sticks by day · day / night","n-l-day":"Day","n-l-night":"Night","n-t-log":"Shift log",
   "n-t-sub":"«sticks made» counter · KAZ2400 line","n-l0":"Sticks, last day","n-l1":"This month","n-l1p":"In period",
   "n-l2":"Average per shift","n-l3":"Shifts","date":"Date","day":"Day","night":"Night","tot":"Total","tf":"TOTAL","empty":"No data for this period.",
-  "n-src":"Source: Siemens HMI panel photos in the «Немирів Виробництво» group. Photo before 12:00 = night shift, from 12:00 = day shift; date = photo date."}};
+  "n-src":"Source: Siemens HMI panel photos in the «Немирів Виробництво» group. Photo 06:30–11:00 = night shift, 19:00–23:00 = day shift; date = photo date."}};
 let ch=null;
 const f0=n=>n==null?"—":Math.round(n).toLocaleString("en-US");
 const $=id=>document.getElementById(id), st=(id,v)=>{const e=$(id); if(e) e.textContent=v;};
