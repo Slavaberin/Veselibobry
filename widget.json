@@ -1,5 +1,5 @@
 {
- "updated": "31.10.2026 22:37",
+ "updated": "01.11.2026 07:07",
  "v": 1,
  "prod_last": {
   "date": "31.10",
@@ -9,7 +9,7 @@
   "change": -57.6,
   "status": "bad"
  },
- "prod_month": 31352,
+ "prod_month": 0,
  "stock": {
   "date": "31.10",
   "value": 4642
