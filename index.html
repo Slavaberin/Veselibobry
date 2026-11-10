@@ -113,6 +113,19 @@ footer{background:var(--cream);border-top:1px solid var(--rule);
   .hstats,.charts,.two{grid-template-columns:1fr 1fr}
   .hstats{margin:0 -1.2rem}
 }
+
+.ch-wrap tbody{max-height:calc(8 * var(--row))}
+.ch-wrap td{padding:.45rem .6rem}
+.ch-wrap .ch-c{text-align:center;font-family:"DM Mono",monospace}
+td.ch-l{background:#c17f24;color:#fff;font-weight:700}
+td.ch-d{background:rgba(193,127,36,.28)}
+tr.ch-today td:first-child{box-shadow:inset 4px 0 0 #c17f24}
+tr.ch-today{background:rgba(26,26,15,.04)}
+tr.ch-fut td:first-child strong{color:rgba(26,26,15,.4)}
+.ch-legend{font-family:"DM Mono",monospace;font-size:.6rem;letter-spacing:.06em;color:rgba(26,26,15,.5);
+  margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
+.ch-sw{display:inline-block;width:14px;height:10px}
+.ch-sw.ch-l{background:#c17f24;margin-left:0}.ch-sw.ch-d{background:rgba(193,127,36,.28);margin-left:1rem}
 </style>
 
 <style>
@@ -163,7 +176,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 10.11.2026 16:00<br>
+      <span id="updated-lbl">Оновлено</span>: 10.11.2026 16:30<br>
       <span class="period" id="current-lbl">Актуально на 05.11</span><br>
       <select class="psel" id="period-sel" onchange="applyPeriod(this.value)"><option value="all">Всі періоди</option><option value="2025-09">2025-09</option><option value="2025-10">2025-10</option><option value="2025-11">2025-11</option><option value="2025-12">2025-12</option><option value="2026-01">2026-01</option><option value="2026-02">2026-02</option><option value="2026-03">2026-03</option><option value="2026-04">2026-04</option><option value="2026-05">2026-05</option><option value="2026-06">2026-06</option><option value="2026-07">2026-07</option><option value="2026-08">2026-08</option><option value="2026-09">2026-09</option><option value="2026-10">2026-10</option><option value="2026-11">2026-11</option></select>
     </div>
@@ -1461,6 +1474,22 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
   </div>
 
+
+  <!-- Камери сушіння -->
+  <div class="sec" id="sec-chambers">
+    <div class="sec-head">
+      <span class="sec-title" id="t-ch">Камери сушіння</span>
+      <span class="sec-sub" id="t-ch-sub">завантаження + 4 дні сушіння</span>
+    </div>
+    <div class="tbl-wrap ch-wrap">
+      <table>
+        <thead><tr><th id="th-ch-date">Дата</th><th class="ch-c">1</th><th class="ch-c">2</th><th class="ch-c">3</th><th class="ch-c">8</th><th class="ch-c">9</th><th class="ch-c">10</th><th class="n" id="th-ch-tot">Завант., кат</th><th class="n" id="th-ch-busy">Зайнято</th></tr></thead>
+        <tbody id="ch-body"><tr data-ym="2026-11"><td><strong>01.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>02.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>03.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>04.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>05.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>06.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>07.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>08.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11"><td><strong>09.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr><tr data-ym="2026-11" class="ch-today"><td><strong>10.11</strong></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="ch-c"></td><td class="n"></td><td class="n"></td></tr></tbody>
+      </table>
+    </div>
+    <div class="ch-legend"><span class="ch-sw ch-l"></span><span id="t-ch-l1">день завантаження (кат)</span>
+      <span class="ch-sw ch-d"></span><span id="t-ch-l2">сушіння</span></div>
+  </div>
 </main>
 <main id="tab-nemyriv" class="vtab">
   <div class="card" style="margin-bottom:2rem">
@@ -3890,6 +3919,15 @@ window.__vbReady = true;
 applyPeriod("all");
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});}</script>
+
+<script>(function(){
+  var T={uk:{"t-ch": "Камери сушіння", "t-ch-sub": "завантаження + 4 дні сушіння", "th-ch-date": "Дата", "th-ch-tot": "Завант., кат", "th-ch-busy": "Зайнято", "t-ch-l1": "день завантаження (кат)", "t-ch-l2": "сушіння"},en:{"t-ch": "Drying chambers", "t-ch-sub": "load day + 4-day drying", "th-ch-date": "Date", "th-ch-tot": "Loaded, coils", "th-ch-busy": "Busy", "t-ch-l1": "load day (coils)", "t-ch-l2": "drying"}};
+  function tr(l){var d=T[l]||T.uk;for(var k in d){var e=document.getElementById(k);if(e)e.textContent=d[k];}}
+  var _s=window.setLang; if(_s){window.setLang=function(l){_s(l);tr(l);};}
+  function sc(){var b=document.getElementById("ch-body"),t=b&&b.querySelector("tr.ch-today");
+    if(b&&t)b.scrollTop=Math.max(0,t.offsetTop-b.offsetTop-2*t.offsetHeight);}
+  window.addEventListener("load",function(){try{tr(document.documentElement.lang==="en"?"en":"uk");}catch(e){} sc();});
+})();</script>
 
 <script>
 (function(){
