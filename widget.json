@@ -1,18 +1,18 @@
 {
- "updated": "12.11.2026 07:00",
+ "updated": "12.11.2026 10:00",
  "v": 1,
  "prod_last": {
   "date": "11.11",
-  "value": 528,
+  "value": 1033,
   "prev": 1145,
   "prev_date": "10.11",
-  "change": -53.9,
-  "status": "bad"
+  "change": -9.8,
+  "status": "warn"
  },
- "prod_month": 11236,
+ "prod_month": 11741,
  "stock": {
-  "date": "11.11",
-  "value": 4200
+  "date": "12.11",
+  "value": 432
  },
  "stearic": {
   "date": "05.11",
