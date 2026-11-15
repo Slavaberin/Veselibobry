@@ -1,5 +1,5 @@
 {
- "updated": "15.11.2026 16:00",
+ "updated": "15.11.2026 17:00",
  "v": 1,
  "prod_last": {
   "date": "14.11",
@@ -11,8 +11,8 @@
  },
  "prod_month": 15283,
  "stock": {
-  "date": "14.11",
-  "value": 4874
+  "date": "15.11",
+  "value": 3537
  },
  "stearic": {
   "date": "05.11",
@@ -20,8 +20,8 @@
   "status": "bad"
  },
  "qm": {
-  "date": "14.11",
-  "value": 34.2,
+  "date": "15.11",
+  "value": 38.7,
   "status": "bad"
  }
 }
