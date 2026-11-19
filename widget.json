@@ -1,15 +1,15 @@
 {
- "updated": "19.11.2026 09:20",
+ "updated": "19.11.2026 09:40",
  "v": 1,
  "prod_last": {
   "date": "18.11",
-  "value": 646,
+  "value": 1251,
   "prev": 1253,
   "prev_date": "17.11",
-  "change": -48.4,
-  "status": "bad"
+  "change": -0.2,
+  "status": "neutral"
  },
- "prod_month": 19094,
+ "prod_month": 19699,
  "stock": {
   "date": "18.11",
   "value": 4622
