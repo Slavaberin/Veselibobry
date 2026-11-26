@@ -4,7 +4,9 @@
 // Розміри: малий — поточна зміна разом; середній — по машинах; великий — поточна + попередня зміна.
 
 const SITE = "https://veselibobry.netlify.app/";
-const DATA_URL = SITE + "iot_widget.json";
+// джерела даних: сайт Netlify, запасне — GitHub (той самий файл, без пароля сайту)
+const SOURCES = [SITE + "iot_widget.json",
+                 "https://raw.githubusercontent.com/Slavaberin/Veselibobry/main/iot_widget.json"];
 const C = {
   bg: new Color("#1a1a0f"),
   paper: new Color("#f5f0e8"),
@@ -17,13 +19,22 @@ const C = {
 // ── дані: мережа, без зв'язку — остання збережена копія ──
 const fm = FileManager.local();
 const cachePath = fm.joinPath(fm.documentsDirectory(), "vb-iot-cache.json");
-let d = null, offline = false;
-try {
-  const req = new Request(DATA_URL + "?t=" + Date.now());
-  req.timeoutInterval = 15;
-  d = await req.loadJSON();
-  fm.writeString(cachePath, JSON.stringify(d));
-} catch (e) {
+let d = null, offline = false, errs = [];
+for (const url of SOURCES) {
+  try {
+    const req = new Request(url + "?t=" + Date.now());
+    req.timeoutInterval = 15;
+    const txt = await req.loadString();
+    const code = req.response ? req.response.statusCode : 0;
+    if (code && code !== 200) throw new Error("HTTP " + code);
+    const j = JSON.parse(txt);
+    if (!j || !j.current) throw new Error("не той формат");
+    d = j; fm.writeString(cachePath, txt); break;
+  } catch (e) {
+    errs.push((url.includes("github") ? "GitHub: " : "Сайт: ") + String(e.message || e).slice(0, 60));
+  }
+}
+if (!d) {
   offline = true;
   if (fm.fileExists(cachePath)) d = JSON.parse(fm.readString(cachePath));
 }
@@ -58,15 +69,19 @@ function shiftTitle(s) {
   t.font = Font.mediumMonospacedSystemFont(10); t.textColor = C.amber;
 }
 
+// фіксована ширина колонок (моноширинний шрифт) — цифри рівно одна під одною
+const COLW = [0, 36, 44, 66];   // назва (решта ширини) · units · time · cycle
 function row(cells, opts = {}) {
   const r = w.addStack(); r.centerAlignContent();
   cells.forEach((c, i) => {
-    const t = r.addText(String(c));
+    const cell = r.addStack();
+    if (i > 0 && cells.length === 4) cell.size = new Size(COLW[i], 0);
+    if (i > 0) cell.addSpacer();                  // числа — по правому краю
+    const t = cell.addText(String(c));
     t.font = opts.bold ? Font.boldMonospacedSystemFont(opts.size || 11) : Font.mediumMonospacedSystemFont(opts.size || 11);
     t.textColor = opts.color || C.paper;
     t.lineLimit = 1;
     if (i === 0) { t.minimumScaleFactor = 0.7; r.addSpacer(); }
-    else if (i < cells.length - 1) r.addSpacer(8);
   });
   w.addSpacer(2);
 }
@@ -80,8 +95,9 @@ function machinesTable(s) {
 }
 
 if (!d) {
-  const t = w.addText("Немає даних.\nПеревірте інтернет.");
+  const t = w.addText("Немає даних.");
   t.font = Font.systemFont(12); t.textColor = C.paper;
+  errs.forEach(e => { const x = w.addText(e); x.font = Font.mediumMonospacedSystemFont(9); x.textColor = C.bad; x.lineLimit = 2; });
 } else if (family === "small") {
   const s = d.current;
   const lt = w.addText(s.date + " · " + (s.shift === "day" ? "день" : "ніч"));

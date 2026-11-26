@@ -1,0 +1,122 @@
+// VB · IoT — production detail by machine (Veseli bobry)
+// Scriptable → "+" → paste this text → name it "VB IoT EN".
+// Data: https://veselibobry.netlify.app/iot_widget.json — the server refreshes it every 30 min (Grafana → site).
+// Sizes: small — current shift total; medium — by machine; large — current + previous shift.
+
+const SITE = "https://veselibobry.netlify.app/";
+// data sources: Netlify site, fallback — GitHub (same file)
+const SOURCES = [SITE + "iot_widget.json",
+                 "https://raw.githubusercontent.com/Slavaberin/Veselibobry/main/iot_widget.json"];
+const C = {
+  bg: new Color("#1a1a0f"),
+  paper: new Color("#f5f0e8"),
+  muted: new Color("#f5f0e8", 0.5),
+  faint: new Color("#f5f0e8", 0.25),
+  amber: new Color("#c17f24"),
+  bad: new Color("#d0503c"),
+};
+
+// ── data: network; offline — last saved copy ──
+const fm = FileManager.local();
+const cachePath = fm.joinPath(fm.documentsDirectory(), "vb-iot-cache-en.json");
+let d = null, offline = false, errs = [];
+for (const url of SOURCES) {
+  try {
+    const req = new Request(url + "?t=" + Date.now());
+    req.timeoutInterval = 15;
+    const txt = await req.loadString();
+    const code = req.response ? req.response.statusCode : 0;
+    if (code && code !== 200) throw new Error("HTTP " + code);
+    const j = JSON.parse(txt);
+    if (!j || !j.current) throw new Error("unexpected format");
+    d = j; fm.writeString(cachePath, txt); break;
+  } catch (e) {
+    errs.push((url.includes("github") ? "GitHub: " : "Site: ") + String(e.message || e).slice(0, 60));
+  }
+}
+if (!d) {
+  offline = true;
+  if (fm.fileExists(cachePath)) d = JSON.parse(fm.readString(cachePath));
+}
+
+const fmt = n => (n == null ? "—" : Math.round(n).toLocaleString("en-GB").replace(/,/g, " "));
+const hm = m => (!m ? "—" : Math.floor(m / 60) + ":" + String(Math.round(m % 60)).padStart(2, "0"));
+const cyc = s => (s == null ? "—" : s >= 60 ? Math.floor(s / 60) + "m " + String(s % 60).padStart(2, "0") + "s" : s + "s");
+const family = config.widgetFamily || "large";
+
+const w = new ListWidget();
+w.backgroundColor = C.bg;
+w.url = SITE;
+w.setPadding(12, 14, 10, 14);
+w.refreshAfterDate = new Date(Date.now() + 30 * 60 * 1000);   // every 30 min (iOS may shift it slightly)
+
+// ── header: VB · IoT · update time ──
+const head = w.addStack();
+head.centerAlignContent();
+const v = head.addText("V"); v.font = Font.boldSystemFont(15); v.textColor = C.paper;
+const b = head.addText("B"); b.font = Font.boldSystemFont(15); b.textColor = C.amber;
+head.addSpacer(6);
+const ti = head.addText("IoT"); ti.font = Font.mediumMonospacedSystemFont(11); ti.textColor = C.muted;
+head.addSpacer();
+if (d) {
+  const up = head.addText((offline ? "offline · " : "") + (d.updated || "").slice(11));
+  up.font = Font.mediumMonospacedSystemFont(10); up.textColor = offline ? C.bad : C.muted;
+}
+w.addSpacer(family === "small" ? 4 : 6);
+
+function shiftTitle(s) {
+  const t = w.addText(s.date + " · " + (s.label_en || s.label));
+  t.font = Font.mediumMonospacedSystemFont(10); t.textColor = C.amber;
+}
+
+// fixed column widths (monospaced font) — numbers line up
+const COLW = [0, 36, 44, 66];   // name (rest) · units · time · cycle
+function row(cells, opts = {}) {
+  const r = w.addStack(); r.centerAlignContent();
+  cells.forEach((c, i) => {
+    const cell = r.addStack();
+    if (i > 0 && cells.length === 4) cell.size = new Size(COLW[i], 0);
+    if (i > 0) cell.addSpacer();                  // numbers right-aligned
+    const t = cell.addText(String(c));
+    t.font = opts.bold ? Font.boldMonospacedSystemFont(opts.size || 11) : Font.mediumMonospacedSystemFont(opts.size || 11);
+    t.textColor = opts.color || C.paper;
+    t.lineLimit = 1;
+    if (i === 0) { t.minimumScaleFactor = 0.7; r.addSpacer(); }
+  });
+  w.addSpacer(2);
+}
+
+function machinesTable(s) {
+  shiftTitle(s);
+  w.addSpacer(3);
+  row(["Machine", "units", "time", "cycle"], { color: C.muted, size: 9 });
+  s.machines.forEach(m => row([m.machine, fmt(m.parts), hm(m.work_min), cyc(m.cycle_s)]));
+  row(["TOTAL", fmt(s.total), "", cyc(s.cycle_s)], { bold: true, color: C.amber });
+}
+
+if (!d) {
+  const t = w.addText("No data.");
+  t.font = Font.systemFont(12); t.textColor = C.paper;
+  errs.forEach(e => { const x = w.addText(e); x.font = Font.mediumMonospacedSystemFont(9); x.textColor = C.bad; x.lineLimit = 2; });
+} else if (family === "small") {
+  const s = d.current;
+  const lt = w.addText(s.date + " · " + (s.shift === "day" ? "day" : "night"));
+  lt.font = Font.mediumMonospacedSystemFont(10); lt.textColor = C.amber;
+  const big = w.addText(fmt(s.total));
+  big.font = Font.boldSystemFont(30); big.textColor = C.paper;
+  const sub = w.addText("units · cycle " + cyc(s.cycle_s));
+  sub.font = Font.mediumMonospacedSystemFont(10); sub.textColor = C.muted;
+  w.addSpacer(4);
+  s.machines.slice(0, 3).forEach(m => row([m.machine, fmt(m.parts)], { size: 10 }));
+} else if (family === "medium") {
+  machinesTable(d.current);
+} else {
+  machinesTable(d.current);
+  w.addSpacer(6);
+  machinesTable(d.previous);
+}
+
+w.addSpacer();
+if (config.runsInWidget) Script.setWidget(w);
+else await w["present" + (family === "small" ? "Small" : family === "medium" ? "Medium" : "Large")]();
+Script.complete();
