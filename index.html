@@ -134,6 +134,11 @@ tr.ch-fut td:first-child strong{color:rgba(26,26,15,.4)}
   margin-top:.5rem;display:flex;gap:.5rem;align-items:center}
 .ch-sw{display:inline-block;width:14px;height:10px}
 .ch-sw.ch-l{background:#c17f24;margin-left:0}.ch-sw.ch-d{background:rgba(193,127,36,.28);margin-left:1rem}
+
+.iot-sel{font-family:"DM Mono",monospace;font-size:.7rem;border:1px solid rgba(26,26,15,.2);background:#fff;padding:.15rem .3rem}
+.iot-wrap th.iot-g{text-align:center;border-bottom:1px solid rgba(255,255,255,.15)}
+.iot-wrap tbody{max-height:none}
+.iot-note{font-family:"DM Mono",monospace;font-size:.6rem;color:rgba(26,26,15,.5);margin-top:.5rem;letter-spacing:.04em}
 </style>
 
 <style>
@@ -184,7 +189,7 @@ tr.cur td{background:rgba(193,127,36,.12)}
     </div>
     <div class="hmeta">
       <span id="facility">Козелець · Козелецький цех</span><br>
-      <span id="updated-lbl">Оновлено</span>: 26.11.2026 13:10<br>
+      <span id="updated-lbl">Оновлено</span>: 26.11.2026 13:40<br>
       <span class="period" id="current-lbl">Актуально на 25.11</span><br>
       <select class="psel" id="period-sel" onchange="applyPeriod(this.value)"><option value="all">Всі періоди</option><option value="2025-09">2025-09</option><option value="2025-10">2025-10</option><option value="2025-11">2025-11</option><option value="2025-12">2025-12</option><option value="2026-01">2026-01</option><option value="2026-02">2026-02</option><option value="2026-03">2026-03</option><option value="2026-04">2026-04</option><option value="2026-05">2026-05</option><option value="2026-06">2026-06</option><option value="2026-07">2026-07</option><option value="2026-08">2026-08</option><option value="2026-09">2026-09</option><option value="2026-10">2026-10</option><option value="2026-11">2026-11</option></select>
     </div>
@@ -1611,6 +1616,29 @@ tr.cur td{background:rgba(193,127,36,.12)}
     <div class="ch-legend"><span class="ch-sw ch-l"></span><span id="t-ch-l1">день завантаження (кат)</span>
       <span class="ch-sw ch-d"></span><span id="t-ch-l2">сушіння</span>
       <span style="color:#2d5a1b;font-weight:700;margin-left:1rem">✓</span><span id="t-ch-l3">перебрано</span></div>
+  </div>
+
+  <!-- Деталізація виробництва (IoT) -->
+  <div class="sec" id="sec-iot">
+    <div class="sec-head">
+      <span class="sec-title" id="t-iot">Деталізація виробництва</span>
+      <span class="sec-sub"><span id="t-iot-sub">тестовий блок · IoT</span> ·
+        <select id="iot-date" class="iot-sel"></select></span>
+    </div>
+    <div class="tbl-wrap iot-wrap">
+      <table>
+        <thead>
+          <tr><th rowspan="2" id="th-iot-m">Машина</th>
+              <th colspan="3" class="iot-g" id="th-iot-day">День 09:00–20:45</th>
+              <th colspan="3" class="iot-g" id="th-iot-night">Ніч 21:00–08:45</th></tr>
+          <tr><th class="n" id="th-iot-p1">Од.</th><th class="n" id="th-iot-w1">Час роботи</th><th class="n" id="th-iot-c1">Цикл, с</th>
+              <th class="n" id="th-iot-p2">Од.</th><th class="n" id="th-iot-w2">Час роботи</th><th class="n" id="th-iot-c2">Цикл, с</th></tr>
+        </thead>
+        <tbody id="iot-body"></tbody>
+        <tfoot id="iot-foot"></tfoot>
+      </table>
+    </div>
+    <div class="iot-note" id="t-iot-note"></div>
   </div>
 </main>
 <main id="tab-nemyriv" class="vtab">
@@ -3432,6 +3460,34 @@ applyPeriod("all");
   function sc(){var b=document.getElementById("ch-body"),t=b&&b.querySelector("tr.ch-today");
     if(b&&t)b.scrollTop=Math.max(0,t.offsetTop-b.offsetTop-2*t.offsetHeight);}
   window.addEventListener("load",function(){try{tr(document.documentElement.lang==="en"?"en":"uk");}catch(e){} sc();});
+})();</script>
+
+<script>(function(){
+  var B={"dates": ["2026-11-26", "2026-11-25", "2026-11-24", "2026-11-23", "2026-11-22", "2026-11-21", "2026-11-20", "2026-11-19"], "machines": ["Тестова№1", "Тестова№2", "Тестова№3"], "data": {"2026-11-18": {"Тестова№1": {"day": {"parts": 2.0, "work": 241.5}, "night": {"work": 409.7}}}, "2026-11-24": {"Тестова№1": {"day": {"parts": 1.0, "work": 282.7}, "night": {"work": 311.7}}}, "2026-11-25": {"Тестова№1": {"day": {"parts": 4.0, "work": 154.4}, "night": {"work": 536.1}}, "Тестова№2": {"day": {"parts": 6.0, "work": 227.4}, "night": {"parts": 26.0, "work": 509.8}}, "Тестова№3": {"day": {"parts": 1.0, "work": 76.0}, "night": {"parts": 35.0, "work": 534.9}}}, "2026-11-26": {"Тестова№1": {"day": {"parts": 18.0, "work": 280.1}}, "Тестова№2": {"day": {"parts": 14.0, "work": 262.6}}, "Тестова№3": {"day": {"parts": 22.0, "work": 280.1}}}}, "updated": "13:40"}, T={"uk": {"t-iot": "Деталізація виробництва", "t-iot-sub": "тестовий блок · IoT", "th-iot-m": "Машина", "th-iot-day": "День 09:00–20:45", "th-iot-night": "Ніч 21:00–08:45", "th-iot-p1": "Од.", "th-iot-w1": "Час роботи", "th-iot-c1": "Цикл, с", "th-iot-p2": "Од.", "th-iot-w2": "Час роботи", "th-iot-c2": "Цикл, с", "tot": "РАЗОМ", "note": "Час роботи — сесії працівника на машині (вхід–вихід) у межах зміни; цикл = час роботи / одиниці. Оновлено о "}, "en": {"t-iot": "Production detail", "t-iot-sub": "test block · IoT", "th-iot-m": "Machine", "th-iot-day": "Day 09:00–20:45", "th-iot-night": "Night 21:00–08:45", "th-iot-p1": "Units", "th-iot-w1": "Work time", "th-iot-c1": "Cycle, s", "th-iot-p2": "Units", "th-iot-w2": "Work time", "th-iot-c2": "Cycle, s", "tot": "TOTAL", "note": "Work time = operator sessions on the machine (login–logout) within the shift; cycle = work time / units. Updated at "}}, L="uk";
+  var sel=document.getElementById("iot-date"); if(!sel) return;
+  function hm(m){ if(!m) return "—"; m=Math.round(m); return Math.floor(m/60)+" год "+String(m%60).padStart(2,"0")+" хв"; }
+  function hmEn(m){ if(!m) return "—"; m=Math.round(m); return Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m"; }
+  function cyc(p,w){ return (p&&w)? Math.round(w*60/p) : "—"; }
+  function n(v){ return v? Math.round(v).toLocaleString("uk-UA") : "—"; }
+  function dd(s){ return s.slice(8,10)+"."+s.slice(5,7); }
+  sel.innerHTML=B.dates.map(function(s){ var has=B.data[s]?" •":""; return '<option value="'+s+'">'+dd(s)+has+'</option>'; }).join("");
+  var first=B.dates.find(function(s){return B.data[s];}); if(first) sel.value=first;
+  function render(){
+    var D=B.data[sel.value]||{}, f=(L==="en"?hmEn:hm), tot={dp:0,dw:0,np:0,nw:0};
+    document.getElementById("iot-body").innerHTML=B.machines.map(function(m){
+      var x=D[m]||{}, dy=x.day||{}, nt=x.night||{};
+      tot.dp+=dy.parts||0; tot.dw+=dy.work||0; tot.np+=nt.parts||0; tot.nw+=nt.work||0;
+      return "<tr><td><strong>"+m+"</strong></td><td class='n'>"+n(dy.parts)+"</td><td class='n'>"+f(dy.work)+"</td><td class='n'>"+cyc(dy.parts,dy.work)+
+             "</td><td class='n'>"+n(nt.parts)+"</td><td class='n'>"+f(nt.work)+"</td><td class='n'>"+cyc(nt.parts,nt.work)+"</td></tr>";
+    }).join("");
+    document.getElementById("iot-foot").innerHTML="<tr><td>"+T[L].tot+"</td><td class='n'>"+n(tot.dp)+"</td><td class='n'>"+f(tot.dw)+"</td><td class='n'>"+cyc(tot.dp,tot.dw)+
+      "</td><td class='n'>"+n(tot.np)+"</td><td class='n'>"+f(tot.nw)+"</td><td class='n'>"+cyc(tot.np,tot.nw)+"</td></tr>";
+    document.getElementById("t-iot-note").textContent=T[L].note+B.updated;
+  }
+  function tr(l){ L=(l==="en")?"en":"uk"; var d=T[L]; for(var k in d){var e=document.getElementById(k); if(e) e.textContent=d[k];} render(); }
+  sel.addEventListener("change",render);
+  var _s=window.setLang; if(_s){ window.setLang=function(l){ _s(l); tr(l); }; }
+  tr(document.documentElement.lang==="en"?"en":"uk");
 })();</script>
 
 <script>
