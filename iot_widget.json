@@ -1,0 +1,59 @@
+{
+ "updated": "2026-11-26 14:40",
+ "current": {
+  "date": "26.11",
+  "shift": "day",
+  "label": "День 09:00–20:45",
+  "label_en": "Day 09:00–20:45",
+  "machines": [
+   {
+    "machine": "Тестова№1",
+    "parts": 20,
+    "work_min": 340,
+    "cycle_s": 1020
+   },
+   {
+    "machine": "Тестова№2",
+    "parts": 16,
+    "work_min": 323,
+    "cycle_s": 1210
+   },
+   {
+    "machine": "Тестова№3",
+    "parts": 25,
+    "work_min": 340,
+    "cycle_s": 816
+   }
+  ],
+  "total": 61,
+  "cycle_s": 987
+ },
+ "previous": {
+  "date": "25.11",
+  "shift": "night",
+  "label": "Ніч 21:00–08:45",
+  "label_en": "Night 21:00–08:45",
+  "machines": [
+   {
+    "machine": "Тестова№1",
+    "parts": 0,
+    "work_min": 536,
+    "cycle_s": null
+   },
+   {
+    "machine": "Тестова№2",
+    "parts": 26,
+    "work_min": 510,
+    "cycle_s": 1176
+   },
+   {
+    "machine": "Тестова№3",
+    "parts": 35,
+    "work_min": 535,
+    "cycle_s": 917
+   }
+  ],
+  "total": 61,
+  "cycle_s": 1555
+ }
+}

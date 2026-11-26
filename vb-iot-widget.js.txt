@@ -1,0 +1,106 @@
+// VB · IoT — деталізація виробництва по машинах («Веселі бобри»)
+// Scriptable → «+» → вставити цей текст → назвати «VB IoT».
+// Дані: https://veselibobry.netlify.app/iot_widget.json — сервер оновлює їх кожні 30 хв (Grafana → сайт).
+// Розміри: малий — поточна зміна разом; середній — по машинах; великий — поточна + попередня зміна.
+
+const SITE = "https://veselibobry.netlify.app/";
+const DATA_URL = SITE + "iot_widget.json";
+const C = {
+  bg: new Color("#1a1a0f"),
+  paper: new Color("#f5f0e8"),
+  muted: new Color("#f5f0e8", 0.5),
+  faint: new Color("#f5f0e8", 0.25),
+  amber: new Color("#c17f24"),
+  bad: new Color("#d0503c"),
+};
+
+// ── дані: мережа, без зв'язку — остання збережена копія ──
+const fm = FileManager.local();
+const cachePath = fm.joinPath(fm.documentsDirectory(), "vb-iot-cache.json");
+let d = null, offline = false;
+try {
+  const req = new Request(DATA_URL + "?t=" + Date.now());
+  req.timeoutInterval = 15;
+  d = await req.loadJSON();
+  fm.writeString(cachePath, JSON.stringify(d));
+} catch (e) {
+  offline = true;
+  if (fm.fileExists(cachePath)) d = JSON.parse(fm.readString(cachePath));
+}
+
+const fmt = n => (n == null ? "—" : Math.round(n).toLocaleString("uk-UA").replace(/,/g, " "));
+const hm = m => (!m ? "—" : Math.floor(m / 60) + ":" + String(Math.round(m % 60)).padStart(2, "0"));
+const cyc = s => (s == null ? "—" : s >= 60 ? Math.floor(s / 60) + "хв " + String(s % 60).padStart(2, "0") + "с" : s + "с");
+const family = config.widgetFamily || "large";
+
+const w = new ListWidget();
+w.backgroundColor = C.bg;
+w.url = SITE;
+w.setPadding(12, 14, 10, 14);
+w.refreshAfterDate = new Date(Date.now() + 30 * 60 * 1000);   // кожні 30 хв (iOS може трохи зсунути)
+
+// ── шапка: VB · IoT · час оновлення ──
+const head = w.addStack();
+head.centerAlignContent();
+const v = head.addText("V"); v.font = Font.boldSystemFont(15); v.textColor = C.paper;
+const b = head.addText("B"); b.font = Font.boldSystemFont(15); b.textColor = C.amber;
+head.addSpacer(6);
+const ti = head.addText("IoT"); ti.font = Font.mediumMonospacedSystemFont(11); ti.textColor = C.muted;
+head.addSpacer();
+if (d) {
+  const up = head.addText((offline ? "офлайн · " : "") + (d.updated || "").slice(11));
+  up.font = Font.mediumMonospacedSystemFont(10); up.textColor = offline ? C.bad : C.muted;
+}
+w.addSpacer(family === "small" ? 4 : 6);
+
+function shiftTitle(s) {
+  const t = w.addText(s.date + " · " + s.label);
+  t.font = Font.mediumMonospacedSystemFont(10); t.textColor = C.amber;
+}
+
+function row(cells, opts = {}) {
+  const r = w.addStack(); r.centerAlignContent();
+  cells.forEach((c, i) => {
+    const t = r.addText(String(c));
+    t.font = opts.bold ? Font.boldMonospacedSystemFont(opts.size || 11) : Font.mediumMonospacedSystemFont(opts.size || 11);
+    t.textColor = opts.color || C.paper;
+    t.lineLimit = 1;
+    if (i === 0) { t.minimumScaleFactor = 0.7; r.addSpacer(); }
+    else if (i < cells.length - 1) r.addSpacer(8);
+  });
+  w.addSpacer(2);
+}
+
+function machinesTable(s) {
+  shiftTitle(s);
+  w.addSpacer(3);
+  row(["Машина", "од.", "час", "цикл"], { color: C.muted, size: 9 });
+  s.machines.forEach(m => row([m.machine, fmt(m.parts), hm(m.work_min), cyc(m.cycle_s)]));
+  row(["РАЗОМ", fmt(s.total), "", cyc(s.cycle_s)], { bold: true, color: C.amber });
+}
+
+if (!d) {
+  const t = w.addText("Немає даних.\nПеревірте інтернет.");
+  t.font = Font.systemFont(12); t.textColor = C.paper;
+} else if (family === "small") {
+  const s = d.current;
+  const lt = w.addText(s.date + " · " + (s.shift === "day" ? "день" : "ніч"));
+  lt.font = Font.mediumMonospacedSystemFont(10); lt.textColor = C.amber;
+  const big = w.addText(fmt(s.total));
+  big.font = Font.boldSystemFont(30); big.textColor = C.paper;
+  const sub = w.addText("од. · цикл " + cyc(s.cycle_s));
+  sub.font = Font.mediumMonospacedSystemFont(10); sub.textColor = C.muted;
+  w.addSpacer(4);
+  s.machines.slice(0, 3).forEach(m => row([m.machine.replace("Тестова", "Т"), fmt(m.parts)], { size: 10 }));
+} else if (family === "medium") {
+  machinesTable(d.current);
+} else {
+  machinesTable(d.current);
+  w.addSpacer(6);
+  machinesTable(d.previous);
+}
+
+w.addSpacer();
+if (config.runsInWidget) Script.setWidget(w);
+else await w["present" + (family === "small" ? "Small" : family === "medium" ? "Medium" : "Large")]();
+Script.complete();
