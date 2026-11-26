@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26 18:20",
+ "updated": "2026-11-26 18:50",
  "current": {
   "date": "26.11",
   "shift": "day",
@@ -21,8 +21,8 @@
    {
     "machine": "Machine 5 B2",
     "parts": 36,
-    "work_min": 559,
-    "cycle_s": 932
+    "work_min": 560,
+    "cycle_s": 933
    }
   ],
   "total": 104,
