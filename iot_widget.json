@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26 21:50",
+ "updated": "2026-11-26 22:20",
  "current": {
   "date": "26.11",
   "shift": "night",
@@ -8,15 +8,15 @@
   "machines": [
    {
     "machine": "Machine 2 B2",
-    "parts": 2,
-    "work_min": 39,
-    "cycle_s": 1170
+    "parts": 5,
+    "work_min": 69,
+    "cycle_s": 828
    },
    {
     "machine": "Machine 4 B2",
-    "parts": 1,
-    "work_min": 50,
-    "cycle_s": 3006
+    "parts": 3,
+    "work_min": 80,
+    "cycle_s": 1602
    },
    {
     "machine": "Machine 5 B2",
@@ -25,8 +25,8 @@
     "cycle_s": null
    }
   ],
-  "total": 3,
-  "cycle_s": 1780
+  "total": 8,
+  "cycle_s": 1118
  },
  "previous": {
   "date": "26.11",
