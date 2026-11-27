@@ -2,6 +2,34 @@
  "updated": "2026-11-26 22:50",
  "current": {
   "date": "27.11",
+  "shift": "night",
+  "label": "Ніч 21:00–08:45",
+  "label_en": "Night 21:00–08:45",
+  "machines": [
+   {
+    "machine": "Machine 2 B2",
+    "parts": 0,
+    "work_min": 0,
+    "cycle_s": null
+   },
+   {
+    "machine": "Machine 4 B2",
+    "parts": 0,
+    "work_min": 0,
+    "cycle_s": null
+   },
+   {
+    "machine": "Machine 5 B2",
+    "parts": 0,
+    "work_min": 0,
+    "cycle_s": null
+   }
+  ],
+  "total": 0,
+  "cycle_s": null
+ },
+ "previous": {
+  "date": "27.11",
   "shift": "day",
   "label": "День 09:00–20:45",
   "label_en": "Day 09:00–20:45",
@@ -27,33 +55,5 @@
   ],
   "total": 0,
   "cycle_s": null
- },
- "previous": {
-  "date": "26.11",
-  "shift": "night",
-  "label": "Ніч 21:00–08:45",
-  "label_en": "Night 21:00–08:45",
-  "machines": [
-   {
-    "machine": "Machine 2 B2",
-    "parts": 8,
-    "work_min": 99,
-    "cycle_s": 742
-   },
-   {
-    "machine": "Machine 4 B2",
-    "parts": 5,
-    "work_min": 110,
-    "cycle_s": 1321
-   },
-   {
-    "machine": "Machine 5 B2",
-    "parts": 0,
-    "work_min": 0,
-    "cycle_s": null
-   }
-  ],
-  "total": 13,
-  "cycle_s": 965
  }
 }
