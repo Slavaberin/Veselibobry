@@ -1,10 +1,10 @@
 {
  "updated": "2026-11-26 22:50",
  "current": {
-  "date": "27.11",
-  "shift": "night",
-  "label": "Ніч 21:00–08:45",
-  "label_en": "Night 21:00–08:45",
+  "date": "28.11",
+  "shift": "day",
+  "label": "День 09:00–20:45",
+  "label_en": "Day 09:00–20:45",
   "machines": [
    {
     "machine": "Machine 2 B2",
@@ -30,9 +30,9 @@
  },
  "previous": {
   "date": "27.11",
-  "shift": "day",
-  "label": "День 09:00–20:45",
-  "label_en": "Day 09:00–20:45",
+  "shift": "night",
+  "label": "Ніч 21:00–08:45",
+  "label_en": "Night 21:00–08:45",
   "machines": [
    {
     "machine": "Machine 2 B2",
